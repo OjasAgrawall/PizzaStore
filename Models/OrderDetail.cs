@@ -12,6 +12,6 @@
 
         public Order Order { get; set; } = null!;
 
-        public Product Product { get; set; } = null!;
+        public Products Product { get; set; } = null!;
     }
 }
