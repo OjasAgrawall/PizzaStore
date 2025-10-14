@@ -9,7 +9,7 @@ namespace LearningEntityFramework.Data
 
         public DbSet<Customer> Customer { get; set; } = null!;
 
-        public DbSet<Product> Product { get; set; } = null!;
+        public DbSet<Products> Products { get; set; } = null!;
 
         public DbSet<OrderDetail> OrderDetails { get; set; } = null!;
 
@@ -19,8 +19,7 @@ namespace LearningEntityFramework.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=.;Database=Pizza;Trusted_Connection=True;");
-");
+            optionsBuilder.UseSqlServer(@"Server=.;Database=Pizza;Trusted_Connection=True;TrustServerCertificate=True;");
         }
 
     }
