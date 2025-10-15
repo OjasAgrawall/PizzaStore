@@ -61,5 +61,14 @@ namespace PizzaStore.Controllers
             return View(products);
         }
 
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            ProductBusinessLayer productBusinessLayer = new ProductBusinessLayer();
+            productBusinessLayer.DeleteProduct(id);
+
+            return RedirectToAction("Index");
+        }
+
     }
 }
