@@ -3,13 +3,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LearningEntityFramework.Models
 {
-    public class Product
+    public class Products
     {
         public int Id { get; set; }
 
         public String Name { get; set; } = null!;
 
-        [Column(TypeName = "decimal(0,2)")]
+        [Column(TypeName = "decimal(6,2)")]
         public decimal Price { get; set; }
     }
 }
