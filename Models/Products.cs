@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LearningEntityFramework.Models
+namespace PizzaStore.Models
 {
     public class Products
     {

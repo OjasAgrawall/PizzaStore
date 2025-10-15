@@ -1,4 +1,4 @@
-﻿namespace LearningEntityFramework.Models
+﻿namespace PizzaStore.Models
 {
     public class Customer
     {

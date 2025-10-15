@@ -1,0 +1,31 @@
+﻿@model PizzaStore.Models.Products
+
+@{
+    ViewData["Title"] = "Add New Product";
+}
+
+
+@using (Html.BeginForm())
+{
+    <fieldset>
+        <legend>Add New Product</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(Model => Model.Name)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(Model => Model.Name)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(Model => Model.Price)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(Model => Model.Price)
+        </div>
+
+        <br />
+
+        <input type="button" value="Create" />
+    </fieldset>
+}

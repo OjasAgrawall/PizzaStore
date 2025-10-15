@@ -1,4 +1,4 @@
-using LearningEntityFramework.Data;
+using PizzaStore.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -1,9 +1,9 @@
 using System.Diagnostics;
-using LearningEntityFramework.Data;
-using LearningEntityFramework.Models;
 using Microsoft.AspNetCore.Mvc;
+using PizzaStore.Data;
+using PizzaStore.Models;
 
-namespace LearningEntityFramework.Controllers
+namespace PizzaStore.Controllers
 {
     public class HomeController : Controller
     {

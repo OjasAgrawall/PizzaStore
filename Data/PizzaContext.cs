@@ -1,8 +1,8 @@
-﻿using LearningEntityFramework.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using PizzaStore.Models;
 using System.Data;
 
-namespace LearningEntityFramework.Data
+namespace PizzaStore.Data
 {
     public class PizzaContext : DbContext
     {
