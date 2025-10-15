@@ -1,31 +1,35 @@
 ﻿@model PizzaStore.Models.Products
 
 @{
-    ViewData["Title"] = "Add New Product";
+	ViewData["Title"] = "Add New Product";
 }
 
 
 @using (Html.BeginForm())
 {
-    <fieldset>
-        <legend>Add New Product</legend>
+	@Html.ValidationSummary(true)
+	<fieldset>
+		<legend>Add New Product</legend>
 
-        <div class="editor-label">
-            @Html.LabelFor(Model => Model.Name)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(Model => Model.Name)
-        </div>
+		<div class="editor-label">
+			@Html.LabelFor(Model => Model.Name)
+		</div>
+		<div class="editor-field">
+			@Html.EditorFor(Model => Model.Name)
+			@Html.ValidationMessageFor(model => model.Name)
+		</div>
 
-        <div class="editor-label">
-            @Html.LabelFor(Model => Model.Price)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(Model => Model.Price)
-        </div>
+		<div class="editor-label">
+			@Html.LabelFor(Model => Model.Price)
+		</div>
+		<div class="editor-field">
+			@Html.EditorFor(Model => Model.Price)
+			@Html.ValidationMessageFor(model => model.Price)
+		</div>
 
-        <br />
-
-        <input type="button" value="Create" />
-    </fieldset>
+		<br />
+		<p>
+			<input type="submit" value="Create" />
+		</p>
+	</fieldset>
 }

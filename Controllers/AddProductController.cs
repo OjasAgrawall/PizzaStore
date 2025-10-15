@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PizzaStore.Data;
 using PizzaStore.Models;
+using System.Diagnostics;
 
 namespace PizzaStore.Controllers
 {
@@ -18,21 +19,42 @@ namespace PizzaStore.Controllers
 
         [HttpGet]
         public IActionResult Create()
-        { 
+        {
             return View();
         }
 
         [HttpPost]
         public IActionResult Create(Products products)
         {
+
             if (ModelState.IsValid)
             {
-                PizzaContext context = new PizzaContext();
-
-                context.Products.Add(products);
+                ProductBusinessLayer productBusinessLayer = new ProductBusinessLayer();
+                productBusinessLayer.AddProduct(products);
                 return RedirectToAction("Index");
             }
             return View();
         }
+
+        [HttpGet]
+        public IActionResult Edit(int id) 
+        {
+            PizzaContext context = new PizzaContext();
+            Products product = context.Products.Single(pizza => pizza.Id == id);
+            return View(product);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Products products)
+        {
+            if (ModelState.IsValid)
+            {
+                ProductBusinessLayer productBusinessLayer = new ProductBusinessLayer();
+                productBusinessLayer.AddProduct(products);
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
+
     }
 }

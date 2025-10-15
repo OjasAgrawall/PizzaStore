@@ -1,20 +1,22 @@
 ﻿@model IEnumerable<PizzaStore.Models.Products>
 
 @{
-    ViewData["Title"] = "Add New Product";
+	ViewData["Title"] = "Add New Product";
 }
 
 <h2>All Products</h2>
 
 <table>
-@foreach (Products products in Model)
-{
-    <tr>
-        <td>@products.Name</td>
+	@foreach (Products products in Model)
+	{
+		<tr>
+			<td>@products.Name</td>
 
-        <td>@products.Price</td>
-    </tr>
-}
+			<td>@products.Price</td>
+
+			<td>@Html.ActionLink("Edit", "Edit", new { id = products.Id })</td>
+		</tr>
+	}
 </table>
 
 <br />
