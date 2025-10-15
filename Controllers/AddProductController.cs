@@ -40,20 +40,25 @@ namespace PizzaStore.Controllers
         public IActionResult Edit(int id) 
         {
             PizzaContext context = new PizzaContext();
-            Products product = context.Products.Single(pizza => pizza.Id == id);
-            return View(product);
+            Products products = context.Products.Single(pizza => pizza.Id == id);
+            return View(products);
         }
 
         [HttpPost]
         public IActionResult Edit(Products products)
         {
+            Debug.WriteLine(products.Id);
+
+
             if (ModelState.IsValid)
             {
+                Debug.WriteLine(products.Id);
+
                 ProductBusinessLayer productBusinessLayer = new ProductBusinessLayer();
-                productBusinessLayer.AddProduct(products);
+                productBusinessLayer.UpdateProduct(products);
                 return RedirectToAction("Index");
             }
-            return View();
+            return View(products);
         }
 
     }
