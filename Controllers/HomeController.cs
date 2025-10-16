@@ -18,23 +18,25 @@ namespace PizzaStore.Controllers
             return View(products);
         }
 
-        [HttpGet]
-        public IActionResult Add(int Id, int quantity)
+        //[HttpGet]
+        //public IActionResult Add(int Id, int quantity)
+        //{
+        //    PizzaContext context = new PizzaContext();
+
+        //    Product product = context.Products.Single(p => p.Id == Id);
+
+        //    OrderDetailsBusinessLayer orderDetailsBusinessLayer = new OrderDetailsBusinessLayer();
+        //    orderDetailsBusinessLayer.AddItem(product, quantity);
+
+
+        //    return RedirectToAction("Index");
+        //}
+
+        public IActionResult Add(int id)
         {
             PizzaContext context = new PizzaContext();
-
-            Product product = context.Products.Single(p => p.Id == Id);
-
-            OrderDetailsBusinessLayer orderDetailsBusinessLayer = new OrderDetailsBusinessLayer();
-            orderDetailsBusinessLayer.AddItem(product, quantity);
-
-
-            return RedirectToAction("Index");
-        }
-
-        public IActionResult test()
-        {
-            return View();
+            Product product = context.Products.Single(p =>  p.Id == id);
+            return View(product);
         }
     }
 }

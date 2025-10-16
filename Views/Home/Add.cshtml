@@ -1,0 +1,13 @@
+﻿@model PizzaStore.Models.Product;
+@{
+    ViewData["Title"] = "Wow";
+}
+
+<h2>@Model.Name</h2>
+
+<p>@Model.Descriptions</p>
+
+<p>Quantity</p>
+<p>Add to cart</p>
+
+@Html.ActionLink("Back to List", "Index")

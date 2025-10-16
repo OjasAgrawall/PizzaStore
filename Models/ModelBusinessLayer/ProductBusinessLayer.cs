@@ -26,6 +26,11 @@ namespace PizzaStore.Models.ModelBusinessLayer
                 paramPrice.Value = products.Price;
                 cmd.Parameters.Add(paramPrice);
 
+                SqlParameter paramDescription = new SqlParameter();
+                paramDescription.ParameterName = "@Description";
+                paramDescription.Value = products.Descriptions;
+                cmd.Parameters.Add(paramDescription);
+
                 con.Open();
                 cmd.ExecuteNonQuery();
             }
@@ -55,6 +60,11 @@ namespace PizzaStore.Models.ModelBusinessLayer
                 paramPrice.ParameterName = "@Price";
                 paramPrice.Value = products.Price;
                 cmd.Parameters.Add(paramPrice);
+
+                SqlParameter paramDescription = new SqlParameter();
+                paramDescription.ParameterName = "@Description";
+                paramDescription.Value = products.Descriptions;
+                cmd.Parameters.Add(paramDescription);
 
                 con.Open();
                 cmd.ExecuteNonQuery();
