@@ -1,9 +1,12 @@
-﻿namespace PizzaStore.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace PizzaStore.Models
 {
     public class OrderDetail
     {
         public int Id { get; set; }
 
+        [Range(0, 10)]
         public int Quantity { get; set; }
 
         public int ProductId { get; set; }

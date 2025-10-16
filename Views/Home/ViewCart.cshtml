@@ -1,0 +1,23 @@
+﻿@model IEnumerable<PizzaStore.Models.OrderDetail>
+
+@{
+	ViewData["Title"] = "Cart";
+}
+
+<ul>
+	@foreach (OrderDetail orderDetail in Model)
+	{	
+		<h onclick="location.href='@Url.Action("Add", "Home", new { id = orderDetail.ProductId })'">
+			@orderDetail.Product.Name
+		</h>
+		<li>
+			@orderDetail.Quantity
+		</li>
+		<li>
+			$@orderDetail.Product.Price each
+		</li>
+
+		<br />
+		
+	}
+</ul>
