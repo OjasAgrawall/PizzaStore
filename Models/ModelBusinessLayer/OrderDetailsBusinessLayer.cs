@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Identity.Client;
+using PizzaStore.Data;
 using System.Data;
 
 namespace PizzaStore.Models.ModelBusinessLayer
@@ -8,7 +9,7 @@ namespace PizzaStore.Models.ModelBusinessLayer
     {
         //Add a new item order to a cart to be later added to an order to be added to a customer
         public void AddItem(Product product, int quantity)
-        {
+        {   
             string connectionstring = "Server=.;Database=Pizza;Trusted_Connection=True;TrustServerCertificate=True;";
 
             using(SqlConnection con = new SqlConnection(connectionstring))
@@ -25,10 +26,6 @@ namespace PizzaStore.Models.ModelBusinessLayer
                 paramProductId.ParameterName = "@ProductId";
                 paramProductId.Value = product.Id;
                 cmd.Parameters.Add(paramProductId);
-
-                SqlParameter paramProduct = new SqlParameter();
-                paramProduct.ParameterName = "@Product";
-                paramProduct.Value = product;
 
                 con.Open();
                 cmd.ExecuteNonQuery();

@@ -1,13 +1,40 @@
-﻿@model PizzaStore.Models.Product;
+﻿@model PizzaStore.Models.OrderDetail;
 @{
     ViewData["Title"] = "Wow";
 }
 
-<h2>@Model.Name</h2>
 
-<p>@Model.Descriptions</p>
 
-<p>Quantity</p>
-<p>Add to cart</p>
+
+@using (Html.BeginForm())
+{
+    <fieldset>
+        <legend>@Model.Product.Name</legend>
+        <p>@Model.Product.Descriptions</p>
+
+		<div class="editor-field">
+			<p>
+				Product ID:
+				@Html.DisplayFor(model => model.ProductId)
+				@Html.HiddenFor(model => model.ProductId)
+				@Html.ValidationMessageFor(model => model.ProductId)
+			</p>
+		</div>
+
+		<div class="editor-label">
+			@Html.Label("Select a Quantity between 1-10")
+		</div>
+		<div class="editor-field">
+			@Html.EditorFor(Model => Model.Quantity)
+			@Html.ValidationMessageFor(Model => Model.Quantity)
+		</div>
+
+		<br />
+		<p>
+			<input type="submit" value="Add to Cart" />
+		</p>
+
+    </fieldset>
+}
 
 @Html.ActionLink("Back to List", "Index")
