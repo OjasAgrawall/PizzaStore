@@ -11,5 +11,7 @@ namespace PizzaStore.Models
 
         [Column(TypeName = "decimal(6,2)")]
         public decimal Price { get; set; }
+
+        public String? Descriptions { get; set; }
     }
 }

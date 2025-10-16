@@ -3,7 +3,7 @@ using PizzaStore.Data;
 using System.Data;
 using System.Diagnostics;
 
-namespace PizzaStore.Models
+namespace PizzaStore.Models.ModelBusinessLayer
 {
     public class ProductBusinessLayer
     {
