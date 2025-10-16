@@ -7,7 +7,7 @@ namespace PizzaStore.Models
 {
     public class ProductBusinessLayer
     {
-        public void AddProduct(Products products)
+        public void AddProduct(Product products)
         {
             string connectionstring = "Server=.;Database=Pizza;Trusted_Connection=True;TrustServerCertificate=True;";
 
@@ -31,7 +31,7 @@ namespace PizzaStore.Models
             }
         }
 
-        public void UpdateProduct(Products products)
+        public void UpdateProduct(Product products)
         {
             string connectionstring = "Server=.;Database=Pizza;Trusted_Connection=True;TrustServerCertificate=True;";
 

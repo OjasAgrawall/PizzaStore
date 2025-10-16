@@ -12,7 +12,7 @@ namespace PizzaStore.Controllers
         {
             PizzaContext context = new PizzaContext();
 
-            List<Products> allProducts = context.Products.ToList();
+            List<Product> allProducts = context.Products.ToList();
 
             return View(allProducts);
         }
@@ -24,7 +24,7 @@ namespace PizzaStore.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Products products)
+        public IActionResult Create(Product products)
         {
 
             if (ModelState.IsValid)
@@ -40,12 +40,12 @@ namespace PizzaStore.Controllers
         public IActionResult Edit(int id) 
         {
             PizzaContext context = new PizzaContext();
-            Products products = context.Products.Single(pizza => pizza.Id == id);
+            Product products = context.Products.Single(pizza => pizza.Id == id);
             return View(products);
         }
 
         [HttpPost]
-        public IActionResult Edit(Products products)
+        public IActionResult Edit(Product products)
         {
             Debug.WriteLine(products.Id);
 
