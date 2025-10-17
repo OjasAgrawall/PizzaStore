@@ -67,14 +67,33 @@ namespace PizzaStore.Controllers
         {
             PizzaContext context = new PizzaContext();
             List<OrderDetail> orders = context.OrderDetails.ToList();
-
+            decimal totalPrice = 0;
             foreach (OrderDetail orderDetail in orders)
             {
                 orderDetail.Product = context.Products.Single(p => p.Id == orderDetail.ProductId);
-
+                totalPrice += orderDetail.Product.Price * orderDetail.Quantity;
             }
+            ViewData["Total"] = totalPrice;
             return View(orders);
+        }
 
+        [HttpGet]
+        public IActionResult EditCart(int Id)
+        {
+            PizzaContext context = new PizzaContext();
+
+            OrderDetail order = context.OrderDetails.Single(p => p.Id == Id);
+
+            order.Product = context.Products.Single(p => p.Id == order.ProductId);
+            return View(order);
+        }
+
+        [HttpPost]
+        public IActionResult EditCart(int Id, int Quantity)
+        {
+            OrderDetailsBusinessLayer orderDetailsBusinessLayer = new OrderDetailsBusinessLayer();
+            orderDetailsBusinessLayer.UpdateItem(Id, Quantity);
+            return RedirectToAction("ViewCart");
         }
     }
 }

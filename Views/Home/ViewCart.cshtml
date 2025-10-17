@@ -8,7 +8,7 @@
 	@foreach (OrderDetail orderDetail in Model)
 	{	
 		//Should send you to an edit page not add but fine for now
-		<h onclick="location.href='@Url.Action("Add", "Home", new { id = orderDetail.ProductId })'">
+		<h onclick="location.href='@Url.Action("EditCart", "Home", new { id = orderDetail.Id })'">
 			@orderDetail.Product.Name
 		</h>
 		<li>
@@ -23,3 +23,7 @@
 		<br />
 	}
 </ul>
+The total cost of the cart is: 
+$@ViewData["Total"]
+<br />
+"checkout button here"

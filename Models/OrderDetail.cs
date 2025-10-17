@@ -6,7 +6,6 @@ namespace PizzaStore.Models
     {
         public int Id { get; set; }
 
-        [Range(0, 10)]
         public int Quantity { get; set; }
 
         public int ProductId { get; set; }
