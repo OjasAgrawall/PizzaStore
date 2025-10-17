@@ -16,12 +16,7 @@ namespace PizzaStore.Controllers
             List<Product> products = context.Products.ToList();
 
             return View(products);
-
-
-
         }
-
-
 
         [HttpGet]
         public IActionResult Add(int id)
@@ -63,6 +58,7 @@ namespace PizzaStore.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
         public IActionResult ViewCart()
         {
             PizzaContext context = new PizzaContext();
@@ -75,6 +71,13 @@ namespace PizzaStore.Controllers
             }
             ViewData["Total"] = totalPrice;
             return View(orders);
+        }
+
+        [HttpPost]
+        [ActionName("ViewCart")]
+        public IActionResult ViewCartPost()
+        {
+            return RedirectToAction("Checkout", "Checkout");
         }
 
         [HttpGet]
