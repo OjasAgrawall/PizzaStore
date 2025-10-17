@@ -1,3 +1,66 @@
-﻿@{
+﻿@model PizzaStore.Models.Customer
+
+@{
 	ViewData["Title"] = "Sign Up";
+}
+
+@using (Html.BeginForm())
+{
+	Html.ValidationSummary(true);
+	<fieldset>
+		<legend>Sign Up</legend>
+
+		<div class="editor-label">
+			@Html.LabelFor(Model => Model.FirstName) *
+		</div>
+		<div class="editor-field">
+			@Html.EditorFor(Model => Model.FirstName)
+			@Html.ValidationMessageFor(model => model.FirstName)
+		</div>
+
+		<div class="editor-label">
+			@Html.LabelFor(Model => Model.LastName) *
+		</div>
+		<div class="editor-field">
+			@Html.EditorFor(Model => Model.LastName)
+			@Html.ValidationMessageFor(model => model.LastName)
+		</div>
+
+		<div class="editor-label">
+			@Html.LabelFor(Model => Model.Email) *
+		</div>
+		<div class="editor-field">
+			@Html.EditorFor(Model => Model.Email)
+			@Html.ValidationMessageFor(model => model.Email)
+		</div>
+
+		<div class="editor-label">
+			@Html.LabelFor(Model => Model.Password) *
+		</div>
+		<div class="editor-field">
+			@Html.EditorFor(Model => Model.Password)
+			@Html.ValidationMessageFor(model => model.Password)
+		</div>
+
+		<div class="editor-label">
+			@Html.LabelFor(Model => Model.Address)
+		</div>
+		<div class="editor-field">
+			@Html.EditorFor(Model => Model.Address)
+			@Html.ValidationMessageFor(model => model.Address)
+		</div>
+
+		<div class="editor-label">
+			@Html.LabelFor(Model => Model.Phone)
+		</div>
+		<div class="editor-field">
+			@Html.EditorFor(Model => Model.Phone)
+			@Html.ValidationMessageFor(model => model.Phone)
+		</div>
+
+		<br />
+		<p>
+			<input type="submit" value="Create" />
+		</p>
+	</fieldset>
 }
