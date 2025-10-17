@@ -31,6 +31,46 @@ namespace PizzaStore.Models.ModelBusinessLayer
                 cmd.ExecuteNonQuery();
             }
         }
+        public void DeleteItem(int id)
+        {
+            string connectionString = "Server=.;Database=Pizza;Trusted_Connection=True;TrustServerCertificate=True;";
 
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("spDeleteItem", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                SqlParameter paramId = new SqlParameter();
+                paramId.ParameterName = "@Id";
+                paramId.Value = id;
+                cmd.Parameters.Add(paramId);
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+        public void UpdateItem(int id, int quantity)
+        {
+            string connectionString = "Server=.;Database=Pizza;Trusted_Connection=True;TrustServerCertificate=True;";
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("spUpdateItem", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                SqlParameter paramId = new SqlParameter();
+                paramId.ParameterName = "@Id";
+                paramId.Value = id;
+                cmd.Parameters.Add(paramId);
+
+                SqlParameter paramQuantity = new SqlParameter();
+                paramQuantity.ParameterName = "@Quantity";
+                paramQuantity.Value = quantity;
+                cmd.Parameters.Add(paramQuantity);
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
 }
