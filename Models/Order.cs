@@ -14,7 +14,5 @@
         public Customer Customer { get; set; } = null!;
 
         public ICollection<OrderDetail> OrderDetails { get; set; } = null!;
-
-
     }
 }

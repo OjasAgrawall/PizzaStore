@@ -1,0 +1,26 @@
+﻿@model PizzaStore.Models.Customer
+@{
+	ViewData["Title"] = "Delivery";
+}
+
+@if (ViewBag.IsAddress == "false")
+{
+	@using (Html.BeginForm())
+	{
+		@Html.ValidationSummary(true)
+		<fieldset>
+			<div class="editor-label">
+				Input the address for Delivery
+			</div>
+			<div class="editor-field">
+				@Html.EditorFor(Model => Model.Address)
+				@Html.ValidationMessageFor(model => model.Address)
+			</div>
+		</fieldset>
+
+		<br />
+		<p>
+			<input type="submit" value="Create" />
+		</p>
+	}
+}

@@ -1,6 +1,52 @@
-﻿@*
+﻿@model IEnumerable<PizzaStore.Models.OrderDetail>
+
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-    ViewData["Title"] = "Checkout";
+	ViewData["Title"] = "Checkout";
 }
+
+<h3>Checkout</h3>
+
+@foreach (OrderDetail orderDetail in Model)
+{
+	<br />
+	<h6>
+		@orderDetail.Product.Name
+	</h6>
+	<div>
+		Quantity: @orderDetail.Quantity
+	</div>
+
+}
+<div>
+	The total cost of the cart is:
+	$@ViewData["Total"]
+
+
+</div>
+<br />
+<div>
+	<p onclick="location.href = '@Url.Action("Index", "Home")'">
+		<input type="button" value="Add More" />
+	</p>
+</div>
+
+<div>
+	Please select the pickup method
+</div>
+<div>
+	<a onclick="location.href = '@Url.Action("Pickup", "Checkout")'">
+		<input type="button" value="Pickup" />
+	</a>
+	|
+	<a onclick="location.href = '@Url.Action("Delivery", "Checkout")'">
+		<input type="button" value="Delivery" />
+	</a>
+</div>
+
+<div>
+	<br />
+	if its delivery, and no address is given, make the user provide one
+</div>
