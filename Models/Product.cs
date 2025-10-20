@@ -7,11 +7,11 @@ namespace PizzaStore.Models
     {
         public int Id { get; set; }
 
-        public String Name { get; set; } = null!;
+        public string Name { get; set; } = null!;
 
         [Column(TypeName = "decimal(6,2)")]
         public decimal Price { get; set; }
 
-        public String? Descriptions { get; set; }
+        public string? Descriptions { get; set; }
     }
 }
