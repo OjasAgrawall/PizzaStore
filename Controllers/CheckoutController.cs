@@ -6,10 +6,10 @@ namespace PizzaStore.Controllers
     {
         public IActionResult Index()
         {
-            return View();
-        }
-        public IActionResult Checkout()
-        {
+            if (TempData.Peek("Customer") == "")
+            {
+                return RedirectToAction("Login", "Customer", new {Checkout = "true"});
+            }
             return View();
         }
     }

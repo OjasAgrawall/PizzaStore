@@ -9,8 +9,12 @@ namespace PizzaStore.Controllers
     public class CustomerController : Controller
     {
         [HttpGet]
-        public IActionResult Login(int a)
+        public IActionResult Login(string Checkout)
         {
+            if (Checkout == "true")
+            {
+                TempData["Checkout"] = "true";
+            }
             return View();
         }
 
@@ -27,6 +31,11 @@ namespace PizzaStore.Controllers
                                         && e.Password == Password);
                 TempData["Customer"] = customer.FirstName + " " + customer.LastName;
 
+
+                if ((string?)TempData["Checkout"] == "true")
+                {
+                    return RedirectToAction("Index", "Checkout");
+                }
                 return RedirectToAction("Index", "Home");
             }
             ViewBag.Exists = "False";
@@ -45,7 +54,6 @@ namespace PizzaStore.Controllers
             if (ModelState.IsValid)
             {
                 PizzaContext context = new PizzaContext();
-                //dupEmail = context.Customer.Where(e => e.Email == customer.Email);
                 if (context.Customer.Any(e => e.Email == customer.Email))
                 {
                     ViewBag.DupEmail = "True";
