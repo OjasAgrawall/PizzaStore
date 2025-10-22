@@ -9,12 +9,8 @@ namespace PizzaStore.Controllers
     public class CustomerController : Controller
     {
         [HttpGet]
-        public IActionResult Login(string Checkout)
+        public IActionResult Login()
         {
-            if (Checkout == "true")
-            {
-                TempData["Checkout"] = "true";
-            }
             return View();
         }
 
@@ -22,21 +18,23 @@ namespace PizzaStore.Controllers
         public IActionResult Login(string Email, string Password)
         {
             PizzaContext context = new PizzaContext();
-            bool success = context.Customer.Any(e => e.Email == Email
-                                        && e.Password == Password);
 
-            
-            if (success){
-                Customer customer = (Customer)context.Customer.Single(e => e.Email == Email
-                                        && e.Password == Password);
+            if (context.Customer.Any(e => e.Email == Email && e.Password == Password)){
+                Customer customer = (Customer)context.Customer.Single(e => e.Email == Email && e.Password == Password);
                 TempData["Customer"] = customer.FirstName + " " + customer.LastName;
 
 
-                if ((string?)TempData["Checkout"] == "true")
-                {
-                    return RedirectToAction("Index", "Checkout");
-                }
+                Order order = new Order();
+                order.Customer = customer;
+                order.CustomerId = customer.Id;
+                OrderBusinessLayer orderBusinessLayer = new OrderBusinessLayer();
+                orderBusinessLayer.AddDetail(order.CustomerId);
+
+                TempData["CustomerObj"] = customer;
+
                 return RedirectToAction("Index", "Home");
+                
+
             }
             ViewBag.Exists = "False";
             return View();

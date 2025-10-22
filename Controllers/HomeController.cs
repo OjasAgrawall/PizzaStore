@@ -21,6 +21,11 @@ namespace PizzaStore.Controllers
         [HttpGet]
         public IActionResult Add(int id)
         {
+            if (TempData.Peek("Customer") == "")
+            {
+                return RedirectToAction("Login", "Customer");
+            }
+
             PizzaContext context = new PizzaContext();
             Product product = context.Products.Single(p => p.Id == id);
             OrderDetail detail = new OrderDetail();
@@ -35,25 +40,38 @@ namespace PizzaStore.Controllers
             PizzaContext context = new PizzaContext();
 
             Product product = context.Products.Single(p => p.Id == Id);
-            List<OrderDetail> orders = context.OrderDetails.ToList();
 
+            Customer customer = (Customer)TempData.Peek("CustomerObj");
+            
+            Order order = context.Orders.Single(o => o.CustomerId == customer.Id);
+
+            OrderDetail orderDetail = new OrderDetail { Quantity = quantity, ProductId = Id, OrderId = order.Id, Product = product, Order = order};
+
+            order.OrderDetails.Add(orderDetail);
+
+            //Add orderdetails to db
             OrderDetailsBusinessLayer orderDetailsBusinessLayer = new OrderDetailsBusinessLayer();
-            orderDetailsBusinessLayer.AddItem(product, quantity);
+            orderDetailsBusinessLayer.AddItem(orderDetail.Product, orderDetail.Quantity);            
 
-            orders = context.OrderDetails
+            List<OrderDetail> orderDetails = context.OrderDetails
                 .OrderBy(order => order.ProductId)
                 .ToList();
 
-
-            for (int i = 0; i < orders.ToArray().Length - 1; i++)
+            for (int i = 0; i < orderDetails.ToArray().Length - 1; i++)
             {
-                if (orders[i].ProductId == orders[i + 1].ProductId)
+                if (orderDetails[i].ProductId == orderDetails[i + 1].ProductId)
                 {
-                    int totalQuantity = orders[i + 1].Quantity + orders[i].Quantity;
-                    orderDetailsBusinessLayer.UpdateItem(orders[i + 1].Id, totalQuantity);
-                    orderDetailsBusinessLayer.DeleteItem(orders[i].Id);
+                    int totalQuantity = orderDetails[i + 1].Quantity + orderDetails[i].Quantity;
+                    orderDetailsBusinessLayer.UpdateItem(orderDetails[i + 1].Id, totalQuantity);
+                    orderDetailsBusinessLayer.DeleteItem(orderDetails[i].Id);
+
+                    order.OrderDetails[i + 1].Quantity = totalQuantity;
+                    order.OrderDetails.RemoveAt(i);
                 }
             }
+
+            
+                
 
             return RedirectToAction("Index");
         }
@@ -61,16 +79,21 @@ namespace PizzaStore.Controllers
         [HttpGet]
         public IActionResult ViewCart()
         {
+            if (TempData.Peek("Customer") == "")
+            {
+                return RedirectToAction("Login", "Customer");
+            }
+
             PizzaContext context = new PizzaContext();
-            List<OrderDetail> orders = context.OrderDetails.ToList();
+            List<OrderDetail> orderDetails = context.OrderDetails.ToList();
             decimal totalPrice = 0;
-            foreach (OrderDetail orderDetail in orders)
+            foreach (OrderDetail orderDetail in orderDetails)
             {
                 orderDetail.Product = context.Products.Single(p => p.Id == orderDetail.ProductId);
                 totalPrice += orderDetail.Product.Price * orderDetail.Quantity;
             }
             ViewData["Total"] = totalPrice;
-            return View(orders);
+            return View(orderDetails);
         }
 
         [HttpPost]

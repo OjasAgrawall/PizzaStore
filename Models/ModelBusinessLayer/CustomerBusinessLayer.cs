@@ -48,5 +48,29 @@ namespace PizzaStore.Models.ModelBusinessLayer
                 cmd.ExecuteNonQuery();
             }
         }
+
+        public void AddAddress(int id, string address)
+        {
+            string connectionstring = "Server=.;Database=Pizza;Trusted_Connection=True;TrustServerCertificate=True;";
+
+            using (SqlConnection con = new SqlConnection(connectionstring))
+            {
+                SqlCommand cmd = new SqlCommand("spAddCustomerAddress", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                SqlParameter paramId= new SqlParameter();
+                paramId.ParameterName = "@Id";
+                paramId.Value = id;
+                cmd.Parameters.Add(paramId);
+
+                SqlParameter paramAddress = new SqlParameter();
+                paramAddress.ParameterName = "@Address";
+                paramAddress.Value = address;
+                cmd.Parameters.Add(paramAddress);
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
 }

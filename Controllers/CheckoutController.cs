@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using PizzaStore.Data;
 using PizzaStore.Models;
 using PizzaStore.Models.ModelBusinessLayer;
@@ -23,11 +24,6 @@ namespace PizzaStore.Controllers
         }
         public IActionResult Index()
         {
-            if (TempData.Peek("Customer") == "")
-            {
-                return RedirectToAction("Login", "Customer", new {Checkout = "true"});
-            }
-
             PizzaContext context = new PizzaContext();
             List<OrderDetail> orderDetails = context.OrderDetails.ToList();
 
@@ -47,6 +43,7 @@ namespace PizzaStore.Controllers
             return View();
         }
 
+        [HttpGet]
         public IActionResult Delivery()
         {
             Customer customer = GetCustomerFromTD();
@@ -55,6 +52,50 @@ namespace PizzaStore.Controllers
             {
                 ViewBag.IsAddress = "false";
             }
+
+            return View(customer);
+        }
+
+        [HttpPost]
+        public IActionResult Delivery(int Id, string Address)
+        {
+            if (Address != null)
+            {
+                CustomerBusinessLayer customerBusinessLayer = new CustomerBusinessLayer();
+                customerBusinessLayer.AddAddress(Id, Address);
+                Debug.WriteLine(Id);
+                return RedirectToAction("Confirm", "method=Delivery");
+            }
+            ViewBag.IsAddress = "false";
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Confirm(string method)
+        {
+            Customer customer = GetCustomerFromTD();
+            ViewBag["method"] = method;
+            return View(customer);
+        }
+
+        [HttpPost]
+        public IActionResult Confirm()
+        {
+            PizzaContext context = new PizzaContext();
+            Order order = new Order();
+
+            Customer customer = GetCustomerFromTD();
+            
+            foreach(OrderDetail orderDetail in context.OrderDetails)
+            {
+                order.OrderDetails.Add(orderDetail);
+                context.OrderDetails.Remove(orderDetail);
+            }
+
+
+
+
+
 
             return View();
         }
