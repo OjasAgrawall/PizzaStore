@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using System.Data;
+using System.Diagnostics;
 using System.Net;
 
 namespace PizzaStore.Models.ModelBusinessLayer
@@ -9,6 +10,7 @@ namespace PizzaStore.Models.ModelBusinessLayer
         public void AddDetail(int CustomerId)
         {
             string connectionstring = "Server=.;Database=Pizza;Trusted_Connection=True;TrustServerCertificate=True;";
+            Debug.WriteLine(CustomerId.ToString() + "1");
 
             using (SqlConnection con = new SqlConnection(connectionstring))
             {
@@ -19,6 +21,9 @@ namespace PizzaStore.Models.ModelBusinessLayer
                 paramCustomerId.ParameterName = "@CustomerId";
                 paramCustomerId.Value = CustomerId;
                 cmd.Parameters.Add(paramCustomerId);
+
+                con.Open();
+                cmd.ExecuteNonQuery();
             }
         }
     }

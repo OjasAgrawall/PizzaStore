@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using PizzaStore.Data;
 using PizzaStore.Models;
 using PizzaStore.Models.ModelBusinessLayer;
+using System.Diagnostics;
 
 namespace PizzaStore.Controllers
 {
@@ -29,8 +30,9 @@ namespace PizzaStore.Controllers
                 order.CustomerId = customer.Id;
                 OrderBusinessLayer orderBusinessLayer = new OrderBusinessLayer();
                 orderBusinessLayer.AddDetail(order.CustomerId);
+                Debug.WriteLine(order.CustomerId);
 
-                TempData["CustomerObj"] = customer;
+                TempData["CustomerId"] = customer.Id.ToString();
 
                 return RedirectToAction("Index", "Home");
                 

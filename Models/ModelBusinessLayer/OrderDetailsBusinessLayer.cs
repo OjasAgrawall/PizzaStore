@@ -8,7 +8,7 @@ namespace PizzaStore.Models.ModelBusinessLayer
     public class OrderDetailsBusinessLayer
     {
         //Add a new item order to a cart to be later added to an order to be added to a customer
-        public void AddItem(Product product, int quantity)
+        public void AddItem(Product product, int quantity, int orderId)
         {   
             string connectionstring = "Server=.;Database=Pizza;Trusted_Connection=True;TrustServerCertificate=True;";
 
@@ -26,6 +26,11 @@ namespace PizzaStore.Models.ModelBusinessLayer
                 paramProductId.ParameterName = "@ProductId";
                 paramProductId.Value = product.Id;
                 cmd.Parameters.Add(paramProductId);
+
+                SqlParameter paramOrderId = new SqlParameter();
+                paramOrderId.ParameterName = "@OrderId";
+                paramOrderId.Value = orderId;
+                cmd.Parameters.Add(paramOrderId);
 
                 con.Open();
                 cmd.ExecuteNonQuery();

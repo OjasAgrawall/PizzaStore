@@ -41,17 +41,20 @@ namespace PizzaStore.Controllers
 
             Product product = context.Products.Single(p => p.Id == Id);
 
-            Customer customer = (Customer)TempData.Peek("CustomerObj");
+            int customerId = int.Parse(TempData.Peek("CustomerId").ToString());
             
-            Order order = context.Orders.Single(o => o.CustomerId == customer.Id);
+            Order order = context.Orders.Single(o => o.CustomerId == customerId);
 
             OrderDetail orderDetail = new OrderDetail { Quantity = quantity, ProductId = Id, OrderId = order.Id, Product = product, Order = order};
 
-            order.OrderDetails.Add(orderDetail);
+            
 
             //Add orderdetails to db
             OrderDetailsBusinessLayer orderDetailsBusinessLayer = new OrderDetailsBusinessLayer();
-            orderDetailsBusinessLayer.AddItem(orderDetail.Product, orderDetail.Quantity);            
+            orderDetailsBusinessLayer.AddItem(orderDetail.Product, orderDetail.Quantity, orderDetail.OrderId);
+
+            order.OrderDetails = new List<OrderDetail>();
+            order.OrderDetails.Add(orderDetail);
 
             List<OrderDetail> orderDetails = context.OrderDetails
                 .OrderBy(order => order.ProductId)
