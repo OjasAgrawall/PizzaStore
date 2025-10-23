@@ -76,14 +76,18 @@ namespace PizzaStore.Controllers
         }
 
         [HttpGet]
-        public IActionResult ViewCart(int OrderId)
+        public IActionResult ViewCart()
         {
             if (TempData.Peek("Customer") == "")
             {
                 return RedirectToAction("Login", "Customer");
             }
-
             PizzaContext context = new PizzaContext();
+
+
+            int customerId = int.Parse(TempData.Peek("CustomerId").ToString());
+            int OrderId = context.Orders.Single(o => o.CustomerId == customerId).Id;
+
             List<OrderDetail> orderDetails = context.OrderDetails
                 .Where(orderD => orderD.OrderId == OrderId)
                 .ToList();
@@ -96,13 +100,6 @@ namespace PizzaStore.Controllers
             }
             ViewData["Total"] = totalPrice;
             return View(orderDetails);
-        }
-
-        [HttpPost]
-        [ActionName("ViewCart")]
-        public IActionResult ViewCartPost()
-        {
-            return RedirectToAction("Checkout", "Checkout");
         }
 
         [HttpGet]

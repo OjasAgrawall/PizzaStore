@@ -25,7 +25,12 @@ namespace PizzaStore.Controllers
         public IActionResult Index()
         {
             PizzaContext context = new PizzaContext();
-            List<OrderDetail> orderDetails = context.OrderDetails.ToList();
+            int customerId = int.Parse(TempData.Peek("CustomerId").ToString());
+            int OrderId = context.Orders.Single(o => o.CustomerId == customerId).Id;
+
+            List<OrderDetail> orderDetails = context.OrderDetails
+                .Where(orderD => orderD.OrderId == OrderId)
+                .ToList();
 
             decimal totalPrice = 0;
             foreach (OrderDetail orderDetail in orderDetails)

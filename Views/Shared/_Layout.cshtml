@@ -26,16 +26,7 @@
 							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Menu</a>
 						</li>
 						<li class="nav-item">
-							@{
-								int OrderId = -1;
-								if (TempData.Peek("CustomerId") != null)
-								{
-									int customerId = int.Parse(TempData.Peek("CustomerId").ToString());
-									PizzaContext context = new PizzaContext();
-									OrderId = context.Orders.Single(o => o.CustomerId == customerId).Id;
-								}
-							}
-							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="ViewCart" asp-route-OrderId="@OrderId">View Cart</a>
+							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="ViewCart">View Cart</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link text-dark" asp-area="" asp-controller="AddProduct" asp-action="Index">Add Product</a>
