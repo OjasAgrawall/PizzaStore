@@ -37,16 +37,11 @@
 	Please select the pickup method
 </div>
 <div>
-	<a onclick="location.href = '@Url.Action("Confirm", "Checkout", "method=Pickup")'">
+	<a onclick="location.href = '@Url.Action("Confirm", "Checkout", new { method = "Pickup" })'">
 		<input type="button" value="Pickup" />
 	</a>
 	|
 	<a onclick="location.href = '@Url.Action("Delivery", "Checkout")'">
 		<input type="button" value="Delivery" />
 	</a>
-</div>
-
-<div>
-	<br />
-	if its delivery, and no address is given, make the user provide one
 </div>

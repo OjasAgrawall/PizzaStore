@@ -56,9 +56,10 @@ namespace PizzaStore.Controllers
             if (customer.Address == null)
             {
                 ViewBag.IsAddress = "false";
+                return View(customer);
             }
 
-            return View(customer);
+            return RedirectToAction("Confirm", new { method = "delivery" });
         }
 
         [HttpPost]
@@ -68,8 +69,7 @@ namespace PizzaStore.Controllers
             {
                 CustomerBusinessLayer customerBusinessLayer = new CustomerBusinessLayer();
                 customerBusinessLayer.AddAddress(Id, Address);
-                Debug.WriteLine(Id);
-                return RedirectToAction("Confirm", "method=Delivery");
+                return RedirectToAction("Confirm", new { method = "delivery"});
             }
             ViewBag.IsAddress = "false";
             return View();
@@ -79,29 +79,13 @@ namespace PizzaStore.Controllers
         public IActionResult Confirm(string method)
         {
             Customer customer = GetCustomerFromTD();
-            ViewBag["method"] = method;
+            ViewBag.Method = method;
             return View(customer);
         }
 
         [HttpPost]
         public IActionResult Confirm()
         {
-            PizzaContext context = new PizzaContext();
-            Order order = new Order();
-
-            Customer customer = GetCustomerFromTD();
-            
-            foreach(OrderDetail orderDetail in context.OrderDetails)
-            {
-                order.OrderDetails.Add(orderDetail);
-                context.OrderDetails.Remove(orderDetail);
-            }
-
-
-
-
-
-
             return View();
         }
     }
