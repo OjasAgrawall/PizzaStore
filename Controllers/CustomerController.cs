@@ -23,15 +23,6 @@ namespace PizzaStore.Controllers
             if (context.Customer.Any(e => e.Email == Email && e.Password == Password)){
                 Customer customer = (Customer)context.Customer.Single(e => e.Email == Email && e.Password == Password);
                 TempData["Customer"] = customer.FirstName + " " + customer.LastName;
-
-
-                Order order = new Order();
-                order.Customer = customer;
-                order.CustomerId = customer.Id;
-                OrderBusinessLayer orderBusinessLayer = new OrderBusinessLayer();
-                orderBusinessLayer.AddDetail(order.CustomerId);
-                Debug.WriteLine(order.CustomerId);
-
                 TempData["CustomerId"] = customer.Id.ToString();
 
                 return RedirectToAction("Index", "Home");
@@ -61,6 +52,14 @@ namespace PizzaStore.Controllers
                 }
                 CustomerBusinessLayer customerBusinessLayer = new CustomerBusinessLayer();
                 customerBusinessLayer.AddCustomer(customer);
+
+                Order order = new Order();
+                order.Customer = context.Customer.Single(c => c.Email == customer.Email);
+                order.CustomerId = order.Customer.Id;
+
+                OrderBusinessLayer orderBusinessLayer = new OrderBusinessLayer();
+                orderBusinessLayer.AddDetail(order.CustomerId);
+
                 return RedirectToAction("Login", "Customer");
             }
             return View();

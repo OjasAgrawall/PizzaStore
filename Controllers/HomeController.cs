@@ -1,4 +1,6 @@
+using LearningEntityFramework.Migrations;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using PizzaStore.Data;
 using PizzaStore.Models;
 using PizzaStore.Models.ModelBusinessLayer;
@@ -42,12 +44,10 @@ namespace PizzaStore.Controllers
             Product product = context.Products.Single(p => p.Id == Id);
 
             int customerId = int.Parse(TempData.Peek("CustomerId").ToString());
-            
+
+            //Link orderDetail to Product and Order, and give it the quantity, productid, and orderid 
             Order order = context.Orders.Single(o => o.CustomerId == customerId);
-
-            OrderDetail orderDetail = new OrderDetail { Quantity = quantity, ProductId = Id, OrderId = order.Id, Product = product, Order = order};
-
-            
+            OrderDetail orderDetail = new OrderDetail {Quantity = quantity, ProductId = Id, OrderId = order.Id, Product = product, Order = order};
 
             //Add orderdetails to db
             OrderDetailsBusinessLayer orderDetailsBusinessLayer = new OrderDetailsBusinessLayer();
@@ -62,7 +62,7 @@ namespace PizzaStore.Controllers
 
             for (int i = 0; i < orderDetails.ToArray().Length - 1; i++)
             {
-                if (orderDetails[i].ProductId == orderDetails[i + 1].ProductId)
+                if (orderDetails[i].ProductId == orderDetails[i + 1].ProductId && orderDetails[i].OrderId == orderDetails[i + 1].OrderId)
                 {
                     int totalQuantity = orderDetails[i + 1].Quantity + orderDetails[i].Quantity;
                     orderDetailsBusinessLayer.UpdateItem(orderDetails[i + 1].Id, totalQuantity);
@@ -72,15 +72,11 @@ namespace PizzaStore.Controllers
                     order.OrderDetails.RemoveAt(i);
                 }
             }
-
-            
-                
-
             return RedirectToAction("Index");
         }
 
         [HttpGet]
-        public IActionResult ViewCart()
+        public IActionResult ViewCart(int OrderId)
         {
             if (TempData.Peek("Customer") == "")
             {
@@ -88,7 +84,10 @@ namespace PizzaStore.Controllers
             }
 
             PizzaContext context = new PizzaContext();
-            List<OrderDetail> orderDetails = context.OrderDetails.ToList();
+            List<OrderDetail> orderDetails = context.OrderDetails
+                .Where(orderD => orderD.OrderId == OrderId)
+                .ToList();
+
             decimal totalPrice = 0;
             foreach (OrderDetail orderDetail in orderDetails)
             {

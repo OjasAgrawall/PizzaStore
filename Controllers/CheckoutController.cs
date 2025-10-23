@@ -17,8 +17,8 @@ namespace PizzaStore.Controllers
             Customer customer = new Customer();
 
 
-            string[] customerFName = TempData.Peek("Customer").ToString().Split(" ");
-            customer = context.Customer.Single(c => c.FirstName == customerFName[0]);
+            int customerId = int.Parse(TempData.Peek("CustomerId").ToString());
+            customer = context.Customer.Single(c => c.Id == customerId);
 
             return customer;
         }

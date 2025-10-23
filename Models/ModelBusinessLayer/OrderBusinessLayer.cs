@@ -10,8 +10,6 @@ namespace PizzaStore.Models.ModelBusinessLayer
         public void AddDetail(int CustomerId)
         {
             string connectionstring = "Server=.;Database=Pizza;Trusted_Connection=True;TrustServerCertificate=True;";
-            Debug.WriteLine(CustomerId.ToString() + "1");
-
             using (SqlConnection con = new SqlConnection(connectionstring))
             {
                 SqlCommand cmd = new SqlCommand("spAddDetailsToOrder", con);
