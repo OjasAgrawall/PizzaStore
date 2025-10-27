@@ -52,7 +52,7 @@ namespace PizzaStore.Controllers
         public IActionResult Delivery()
         {
             Customer customer = GetCustomerFromTD();
-            
+
             if (customer.Address == null)
             {
                 ViewBag.IsAddress = "false";
@@ -69,24 +69,25 @@ namespace PizzaStore.Controllers
             {
                 CustomerBusinessLayer customerBusinessLayer = new CustomerBusinessLayer();
                 customerBusinessLayer.AddAddress(Id, Address);
-                return RedirectToAction("Confirm", new { method = "delivery"});
+                return RedirectToAction("Confirm", new { method = "delivery" });
             }
+
             ViewBag.IsAddress = "false";
             return View();
         }
 
-        [HttpGet]
         public IActionResult Confirm(string method)
         {
             Customer customer = GetCustomerFromTD();
+            PizzaContext context = new PizzaContext();
             ViewBag.Method = method;
-            return View(customer);
-        }
+            Order order = context.Orders.Single(o => o.CustomerId == customer.Id);
+            DateTime dateTime = DateTime.Now;
+            
+            OrderBusinessLayer orderBusinessLayer = new OrderBusinessLayer();
+            orderBusinessLayer.AddOrderPlaced(order.Id, dateTime);
 
-        [HttpPost]
-        public IActionResult Confirm()
-        {
-            return View();
+            return View(customer);
         }
     }
 }

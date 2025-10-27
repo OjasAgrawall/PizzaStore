@@ -1,10 +1,47 @@
-﻿@model PizzaStore.Models.Customer
+﻿@using PizzaStore.Data
+@model PizzaStore.Models.Customer
 
 @{
 	ViewData["Title"] = "Confirm Order";
 }
 
+<h2>
+	Order Confirmed!
+</h2>
+<br />
+<text>
+	Your order is confirmed for: @ViewBag.Method
+	<br />
+		@if(ViewBag.Method == "delivery")
+	{
+		<text>The following contents will be delivered to @Model.Address</text>
+	}
+	else
+	{
+		<text>Pickup at 123 Pizza Store Road</text>
+	}
+</text>
+@{
+	PizzaContext context = new PizzaContext();
+	Order order = context.Orders.Single(o => o.CustomerId == Model.Id);
 
-<p>
-	@ViewBag.Method
-</p>
+	List<OrderDetail> orderDetails = context.OrderDetails
+		.Where(o => o.OrderId == order.Id)
+		.ToList();
+}
+<br />
+<br />
+<h5>
+	Order Contents:
+</h5>
+@foreach (OrderDetail orderDetail in orderDetails)
+{
+	<h6>
+		@context.Products.Single(p => p.Id == orderDetail.ProductId).Name
+	</h6>
+	<li>
+		Quantity: @orderDetail.Quantity
+	</li>
+	<br />
+
+}

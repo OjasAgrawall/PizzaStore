@@ -37,11 +37,11 @@
 	Please select the pickup method
 </div>
 <div>
-	<a onclick="location.href = '@Url.Action("Confirm", "Checkout", new { method = "Pickup" })'">
+	<a onclick="location.href = '@Url.Action("Confirm", "Checkout", new { method = "pickup" })'">
 		<input type="button" value="Pickup" />
 	</a>
 	|
-	<a onclick="location.href = '@Url.Action("Delivery", "Checkout")'">
+	<a onclick="location.href = '@Url.Action("Delivery", "Checkout", new { method = "delivery" })'">
 		<input type="button" value="Delivery" />
 	</a>
 </div>

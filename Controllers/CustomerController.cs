@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Humanizer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using PizzaStore.Data;
 using PizzaStore.Models;
 using PizzaStore.Models.ModelBusinessLayer;
 using System.Diagnostics;
+using System.Globalization;
+using static NuGet.Packaging.PackagingConstants;
 
 namespace PizzaStore.Controllers
 {
@@ -22,8 +25,12 @@ namespace PizzaStore.Controllers
 
             if (context.Customer.Any(e => e.Email == Email && e.Password == Password)){
                 Customer customer = (Customer)context.Customer.Single(e => e.Email == Email && e.Password == Password);
+                customer.FirstName = customer.FirstName.Titleize();
+                customer.LastName = customer.LastName.Titleize();
                 TempData["Customer"] = customer.FirstName + " " + customer.LastName;
                 TempData["CustomerId"] = customer.Id.ToString();
+
+                
 
                 return RedirectToAction("Index", "Home");
                 
@@ -58,7 +65,7 @@ namespace PizzaStore.Controllers
                 order.CustomerId = order.Customer.Id;
 
                 OrderBusinessLayer orderBusinessLayer = new OrderBusinessLayer();
-                orderBusinessLayer.AddDetail(order.CustomerId);
+                orderBusinessLayer.AddCustomerId(order.CustomerId);
 
                 return RedirectToAction("Login", "Customer");
             }
