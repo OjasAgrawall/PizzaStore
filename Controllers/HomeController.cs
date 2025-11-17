@@ -39,9 +39,19 @@ namespace PizzaStore.Controllers
         [HttpPost]
         public IActionResult Add(int Id, int quantity)
         {
+            
             PizzaContext context = new PizzaContext();
 
             Product product = context.Products.Single(p => p.Id == Id);
+
+            if (quantity <= 0)
+            {
+                OrderDetail detail = new OrderDetail();
+                detail.Product = product;
+                detail.ProductId = product.Id;
+                ViewBag.Negative = "true";
+                return View(detail);
+            }
 
             int customerId = int.Parse(TempData.Peek("CustomerId").ToString());
 
@@ -52,9 +62,6 @@ namespace PizzaStore.Controllers
             //Add orderdetails to db
             OrderDetailsBusinessLayer orderDetailsBusinessLayer = new OrderDetailsBusinessLayer();
             orderDetailsBusinessLayer.AddItem(orderDetail.Product, orderDetail.Quantity, orderDetail.OrderId);
-
-            order.OrderDetails = new List<OrderDetail>();
-            order.OrderDetails.Add(orderDetail);
 
             List<OrderDetail> orderDetails = context.OrderDetails
                 .OrderBy(order => order.ProductId)
@@ -67,9 +74,6 @@ namespace PizzaStore.Controllers
                     int totalQuantity = orderDetails[i + 1].Quantity + orderDetails[i].Quantity;
                     orderDetailsBusinessLayer.UpdateItem(orderDetails[i + 1].Id, totalQuantity);
                     orderDetailsBusinessLayer.DeleteItem(orderDetails[i].Id);
-
-                    order.OrderDetails[i + 1].Quantity = totalQuantity;
-                    order.OrderDetails.RemoveAt(i);
                 }
             }
             return RedirectToAction("Index");

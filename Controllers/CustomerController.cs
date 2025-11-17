@@ -30,11 +30,7 @@ namespace PizzaStore.Controllers
                 TempData["Customer"] = customer.FirstName + " " + customer.LastName;
                 TempData["CustomerId"] = customer.Id.ToString();
 
-                
-
                 return RedirectToAction("Index", "Home");
-                
-
             }
             ViewBag.Exists = "False";
             return View();
@@ -62,10 +58,9 @@ namespace PizzaStore.Controllers
 
                 Order order = new Order();
                 order.Customer = context.Customer.Single(c => c.Email == customer.Email);
-                order.CustomerId = order.Customer.Id;
 
                 OrderBusinessLayer orderBusinessLayer = new OrderBusinessLayer();
-                orderBusinessLayer.AddCustomerId(order.CustomerId);
+                orderBusinessLayer.AddCustomerId(order.Customer.Id);
 
                 return RedirectToAction("Login", "Customer");
             }

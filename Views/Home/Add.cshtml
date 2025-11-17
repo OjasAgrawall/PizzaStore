@@ -28,6 +28,12 @@
 			@Html.EditorFor(Model => Model.Quantity)
 			@Html.ValidationMessageFor(Model => Model.Quantity)
 		</div>
+		@if(ViewBag.Negative == "true")
+		{
+			<p style ="color: red">
+				The quantity must be greater than 0
+			</p>
+		}
 
 		<br />
 		<p>
