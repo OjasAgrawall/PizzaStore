@@ -82,7 +82,7 @@ namespace PizzaStore.Controllers
         [HttpGet]
         public IActionResult ViewCart()
         {
-            if (TempData.Peek("Customer") == "")
+            if (TempData.Peek("Customer") is null)
             {
                 return RedirectToAction("Login", "Customer");
             }

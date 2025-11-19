@@ -32,7 +32,7 @@
 							<a class="nav-link text-dark" asp-area="" asp-controller="AddProduct" asp-action="Index">Add Product</a>
 						</li>
 					</ul>
-					@if ((string?)TempData.Peek("Customer") == "")
+					@if ((string?)TempData.Peek("Customer") is null)
 					{
 						<ul class="nav navbar-nav navbar-right">
 							<li class="nav-item">
