@@ -28,20 +28,20 @@
 </div>
 <br />
 <div>
-	<p onclick="location.href = '@Url.Action("Index", "Home")'">
+	<a href = "@Url.Action("Index", "Home")">
 		<input type="button" value="Add More" />
-	</p>
+	</a>
 </div>
 
 <div>
 	Please select the pickup method
 </div>
 <div>
-	<a onclick="location.href = '@Url.Action("Confirm", "Checkout", new { method = "pickup" })'">
+	<a href = "@Url.Action("Confirm", "Checkout", new { method = "pickup" })">
 		<input type="button" value="Pickup" />
 	</a>
 	|
-	<a onclick="location.href = '@Url.Action("Delivery", "Checkout", new { method = "delivery" })'">
+	<a href = "@Url.Action("Delivery", "Checkout", new { method = "delivery" })">
 		<input type="button" value="Delivery" />
 	</a>
 </div>
