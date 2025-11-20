@@ -31,7 +31,7 @@ else
 				$@(orderDetail.Product.Price* orderDetail.Quantity) Total
 			</li>
 			<li>
-				@Html.ActionLink("Remove From Cart", "Delete", new { id = orderDetail.Id })
+				<a asp-controller="Home" asp-action="Delete" asp-route-id="@orderDetail.Id" class="btn btn-close btn-outline-danger"></a>
 			</li>
 			<br />
 		}
@@ -41,7 +41,7 @@ else
 		$@ViewData["Total"]
 	</p>
 
-	<a href="@Url.Action("Index", "Checkout")">
-		<input type="button" value="Checkout" />
+	<a asp-controller="Checkout" asp-action="Index" class="btn btn-outline-primary">
+		Checkout
 	</a>
 }

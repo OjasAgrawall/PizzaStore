@@ -28,20 +28,21 @@
 </div>
 <br />
 <div>
-	<a href = "@Url.Action("Index", "Home")">
-		<input type="button" value="Add More" />
+	<a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary">
+		Add more
 	</a>
 </div>
 
 <div>
 	Please select the pickup method
 </div>
+<br />
 <div>
-	<a href = "@Url.Action("Confirm", "Checkout", new { method = "pickup" })">
-		<input type="button" value="Pickup" />
+	<a asp-controller="Checkout" asp-action="Confirm" asp-route-method="Pickup" class="btn btn-outline-primary">
+		Pickup
 	</a>
 	|
-	<a href = "@Url.Action("Delivery", "Checkout", new { method = "delivery" })">
-		<input type="button" value="Delivery" />
+	<a asp-controller="Checkout" asp-action="Delivery" class="btn btn-outline-primary">
+		Delivery
 	</a>
 </div>
