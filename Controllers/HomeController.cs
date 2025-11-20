@@ -120,8 +120,25 @@ namespace PizzaStore.Controllers
         [HttpPost]
         public IActionResult EditCart(int Id, int Quantity)
         {
+            if (Quantity > 0)
+            {
+
+                OrderDetailsBusinessLayer orderDetailsBusinessLayer = new OrderDetailsBusinessLayer();
+                orderDetailsBusinessLayer.UpdateItem(Id, Quantity);
+                return RedirectToAction("ViewCart");
+            }
+
+            OrderDetail order = context.OrderDetails.Single(o => o.Id == Id);
+            order.Product = context.Products.Single(p => p.Id == order.ProductId);
+            order.Quantity = Quantity;
+            return View(order);
+        }
+
+        [HttpGet]
+        public IActionResult Delete(int Id)
+        {
             OrderDetailsBusinessLayer orderDetailsBusinessLayer = new OrderDetailsBusinessLayer();
-            orderDetailsBusinessLayer.UpdateItem(Id, Quantity);
+            orderDetailsBusinessLayer.DeleteItem(Id);
             return RedirectToAction("ViewCart");
         }
     }

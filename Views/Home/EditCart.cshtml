@@ -27,7 +27,12 @@
 		</div>
 		<div class="editor-field">
 			@Html.EditorFor(Model => Model.Quantity)
-			@Html.ValidationMessageFor(model => model.Quantity)
+			@if (Model.Quantity <= 0)
+			{
+				<a style="color: red">
+					Quantity must be greater than 0
+				</a>
+			}
 		</div>
 
 		<p>

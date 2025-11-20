@@ -22,7 +22,7 @@
 	<h2>Pizzas</h2>
 
 	@foreach(Product product in @Model){
-		<tr href = "@Url.Action("Add", "Home", new { id = product.Id })">
+		<tr onclick="location.href = '@Url.Action("Add", "Home", new { id = product.Id })'">
 			<td style="width:20%">@product.Name</td>
 
 			<td style="width:20%">@product.Price</td>
