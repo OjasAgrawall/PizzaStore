@@ -4,31 +4,44 @@
 	ViewData["Title"] = "Cart";
 }
 
-<ul style="list-style: none;">
-	@foreach (OrderDetail orderDetail in Model)
-	{	
-		//Should send you to an edit page not add but fine for now
-		<h6>
-			@orderDetail.Product.Name
-		</h6>
-		<li>
-			@Html.ActionLink("Quantity: " + orderDetail.Quantity.ToString(), "EditCart", new { id = orderDetail.Id })		
-		</li>
-		<li>
-			$@orderDetail.Product.Price each
-		</li>
-		<li>
-			$@(orderDetail.Product.Price * orderDetail.Quantity) Total
-		</li>
-		<li>
-			@Html.ActionLink("Remove From Cart", "Delete", new {id = orderDetail.Id})
-		</li>
-		<br />
-	}
-</ul>
-The total cost of the cart is: 
-$@ViewData["Total"]
-<br />
-<a href = "@Url.Action("Index", "Checkout")">
-	<input type="button" value="Checkout" />
-</a>
+@if (Model.FirstOrDefault() == null)
+{
+	<p>Your cart is empty!</p>
+	<a href="@Url.Action("Index", "Home")">
+		<input type="button" value="Add a Pizza" />
+	</a>
+}
+
+else
+{
+	<ul style="list-style: none;">
+		@foreach (OrderDetail orderDetail in Model)
+		{
+			//Should send you to an edit page not add but fine for now
+			<h6>
+				@orderDetail.Product.Name
+			</h6>
+			<li>
+				@Html.ActionLink("Quantity: " + orderDetail.Quantity.ToString(), "EditCart", new { id = orderDetail.Id })
+			</li>
+			<li>
+				$@orderDetail.Product.Price each
+			</li>
+			<li>
+				$@(orderDetail.Product.Price* orderDetail.Quantity) Total
+			</li>
+			<li>
+				@Html.ActionLink("Remove From Cart", "Delete", new { id = orderDetail.Id })
+			</li>
+			<br />
+		}
+	</ul>
+	<p>
+		The total cost of the cart is:
+		$@ViewData["Total"]
+	</p>
+
+	<a href="@Url.Action("Index", "Checkout")">
+		<input type="button" value="Checkout" />
+	</a>
+}
