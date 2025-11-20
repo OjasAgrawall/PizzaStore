@@ -17,10 +17,7 @@ namespace PizzaStore.Data
 
 
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(@"Server=.;Database=Pizza;Trusted_Connection=True;TrustServerCertificate=True;");
-        }
-
+        public PizzaContext(DbContextOptions options) : base(options) {}
+        
     }
-}
+} 

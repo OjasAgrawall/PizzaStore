@@ -9,9 +9,14 @@ namespace PizzaStore.Controllers
 {
     public class AddProductController : Controller
     {
+        private readonly PizzaContext context;
+
+        public AddProductController(PizzaContext _context)
+        {
+            context = _context;
+        }
         public IActionResult Index()
         {
-            PizzaContext context = new PizzaContext();
 
             List<Product> allProducts = context.Products.ToList();
 
@@ -40,7 +45,6 @@ namespace PizzaStore.Controllers
         [HttpGet]
         public IActionResult Edit(int id) 
         {
-            PizzaContext context = new PizzaContext();
             Product products = context.Products.Single(pizza => pizza.Id == id);
             return View(products);
         }

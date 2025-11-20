@@ -10,8 +10,16 @@ using static NuGet.Packaging.PackagingConstants;
 
 namespace PizzaStore.Controllers
 {
+
     public class CustomerController : Controller
     {
+        private readonly PizzaContext context;
+
+        public CustomerController(PizzaContext _context)
+        {
+            context = _context;
+        }
+
         [HttpGet]
         public IActionResult Login()
         {
@@ -21,8 +29,6 @@ namespace PizzaStore.Controllers
         [HttpPost]
         public IActionResult Login(string Email, string Password)
         {
-            PizzaContext context = new PizzaContext();
-
             if (context.Customer.Any(e => e.Email == Email && e.Password == Password)){
                 Customer customer = (Customer)context.Customer.Single(e => e.Email == Email && e.Password == Password);
                 customer.FirstName = customer.FirstName.Titleize();
@@ -47,7 +53,6 @@ namespace PizzaStore.Controllers
         {
             if (ModelState.IsValid)
             {
-                PizzaContext context = new PizzaContext();
                 if (context.Customer.Any(e => e.Email == customer.Email))
                 {
                     ViewBag.DupEmail = "True";

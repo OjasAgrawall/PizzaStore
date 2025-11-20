@@ -22,10 +22,8 @@
 	}
 </text>
 @{
-	PizzaContext context = new PizzaContext();
-	Order order = context.Orders.Single(o => o.CustomerId == Model.Id);
-
-	List<OrderDetail> orderDetails = context.OrderDetails
+	Order order = Model.Orders.Single(o => o.CustomerId == Model.Id);
+	List<OrderDetail> orderDetails = order.OrderDetails
 		.Where(o => o.OrderId == order.Id)
 		.ToList();
 }
@@ -37,7 +35,7 @@
 @foreach (OrderDetail orderDetail in orderDetails)
 {
 	<h6>
-		@context.Products.Single(p => p.Id == orderDetail.ProductId).Name
+		@orderDetail.Product.Name
 	</h6>
 	<li>
 		Quantity: @orderDetail.Quantity

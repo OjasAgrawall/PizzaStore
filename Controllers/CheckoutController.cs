@@ -10,10 +10,14 @@ namespace PizzaStore.Controllers
 {
     public class CheckoutController : Controller
     {
+        private readonly PizzaContext context;
 
+        public CheckoutController(PizzaContext _context)
+        {
+            context = _context;
+        }
         public Customer GetCustomerFromTD()
         {
-            PizzaContext context = new PizzaContext();
             Customer customer = new Customer();
 
 
@@ -24,7 +28,6 @@ namespace PizzaStore.Controllers
         }
         public IActionResult Index()
         {
-            PizzaContext context = new PizzaContext();
             int customerId = int.Parse(TempData.Peek("CustomerId").ToString());
             int OrderId = context.Orders.Single(o => o.CustomerId == customerId).Id;
 
@@ -79,7 +82,6 @@ namespace PizzaStore.Controllers
         public IActionResult Confirm(string method)
         {
             Customer customer = GetCustomerFromTD();
-            PizzaContext context = new PizzaContext();
             ViewBag.Method = method;
             Order order = context.Orders.Single(o => o.CustomerId == customer.Id);
             DateTime dateTime = DateTime.Now;

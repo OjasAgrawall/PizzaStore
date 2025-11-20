@@ -11,9 +11,16 @@ namespace PizzaStore.Controllers
 {
     public class HomeController : Controller
     {
+
+        private readonly PizzaContext context;
+
+        public HomeController(PizzaContext _context)
+        {
+            context = _context;
+        }
+
         public IActionResult Index()
         {
-            PizzaContext context = new PizzaContext();
 
             List<Product> products = context.Products.ToList();
 
@@ -28,7 +35,6 @@ namespace PizzaStore.Controllers
                 return RedirectToAction("Login", "Customer");
             }
 
-            PizzaContext context = new PizzaContext();
             Product product = context.Products.Single(p => p.Id == id);
             OrderDetail detail = new OrderDetail();
             detail.Product = product;
@@ -39,8 +45,6 @@ namespace PizzaStore.Controllers
         [HttpPost]
         public IActionResult Add(int Id, int quantity)
         {
-            
-            PizzaContext context = new PizzaContext();
 
             Product product = context.Products.Single(p => p.Id == Id);
 
@@ -86,8 +90,6 @@ namespace PizzaStore.Controllers
             {
                 return RedirectToAction("Login", "Customer");
             }
-            PizzaContext context = new PizzaContext();
-
 
             int customerId = int.Parse(TempData.Peek("CustomerId").ToString());
             int OrderId = context.Orders.Single(o => o.CustomerId == customerId).Id;
@@ -109,8 +111,6 @@ namespace PizzaStore.Controllers
         [HttpGet]
         public IActionResult EditCart(int Id)
         {
-            PizzaContext context = new PizzaContext();
-
             OrderDetail order = context.OrderDetails.Single(p => p.Id == Id);
 
             order.Product = context.Products.Single(p => p.Id == order.ProductId);
