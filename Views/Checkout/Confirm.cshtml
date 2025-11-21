@@ -1,5 +1,4 @@
-﻿@using PizzaStore.Data
-@model PizzaStore.Models.Customer
+﻿@model IEnumerable<PizzaStore.Models.OrderDetail>
 
 @{
 	ViewData["Title"] = "Confirm Order";
@@ -14,25 +13,19 @@
 	<br />
 		@if(ViewBag.Method == "delivery")
 	{
-		<text>The following contents will be delivered to @Model.Address</text>
+		<text>The following contents will be delivered to @ViewBag.Address</text>
 	}
 	else
 	{
 		<text>Pickup at 123 Pizza Store Road</text>
 	}
 </text>
-@{
-	Order order = Model.Orders.Single(o => o.CustomerId == Model.Id);
-	List<OrderDetail> orderDetails = order.OrderDetails
-		.Where(o => o.OrderId == order.Id)
-		.ToList();
-}
 <br />
 <br />
 <h5>
 	Order Contents:
 </h5>
-@foreach (OrderDetail orderDetail in orderDetails)
+@foreach (OrderDetail orderDetail in Model)
 {
 	<h6>
 		@orderDetail.Product.Name

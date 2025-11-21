@@ -75,7 +75,8 @@ namespace PizzaStore.Controllers
         [HttpGet]
         public IActionResult Logout()
         {
-            TempData["Customer"] = "";
+            TempData["Customer"] = null;
+            TempData["CustomerId"] = null;
             return RedirectToAction("SignUp", "Customer");
         }
     }

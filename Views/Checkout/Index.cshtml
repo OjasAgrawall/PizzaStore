@@ -23,20 +23,19 @@
 <div>
 	The total cost of the cart is:
 	$@ViewData["Total"]
-
-
 </div>
-<br />
 <div>
-	<a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary">
+	<a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">
 		Add more
 	</a>
 </div>
 
+<br />
+
 <div>
 	Please select the pickup method
 </div>
-<br />
+
 <div>
 	<a asp-controller="Checkout" asp-action="Confirm" asp-route-method="Pickup" class="btn btn-outline-primary">
 		Pickup

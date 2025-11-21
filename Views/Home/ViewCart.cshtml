@@ -7,8 +7,8 @@
 @if (Model.FirstOrDefault() == null)
 {
 	<p>Your cart is empty!</p>
-	<a href="@Url.Action("Index", "Home")">
-		<input type="button" value="Add a Pizza" />
+	<a asp-action="Index" class="btn btn-outline-secondary">
+		Add a pizza
 	</a>
 }
 
@@ -17,12 +17,11 @@ else
 	<ul style="list-style: none;">
 		@foreach (OrderDetail orderDetail in Model)
 		{
-			//Should send you to an edit page not add but fine for now
 			<h6>
 				@orderDetail.Product.Name
 			</h6>
 			<li>
-				@Html.ActionLink("Quantity: " + orderDetail.Quantity.ToString(), "EditCart", new { id = orderDetail.Id })
+				Quantity: @orderDetail.Quantity
 			</li>
 			<li>
 				$@orderDetail.Product.Price each
@@ -31,7 +30,12 @@ else
 				$@(orderDetail.Product.Price* orderDetail.Quantity) Total
 			</li>
 			<li>
-				<a asp-controller="Home" asp-action="Delete" asp-route-id="@orderDetail.Id" class="btn btn-close btn-outline-danger"></a>
+				<a asp-action="EditCart" asp-route-id="@orderDetail.Id " class="btn btn-outline-secondary btn-sm">
+					Edit Item Quantity
+				</a>
+			</li>	
+			<li>
+				<a asp-controller="Home" asp-action="Delete" asp-route-id="@orderDetail.Id" class="btn btn-danger btn-close"></a>
 			</li>
 			<br />
 		}

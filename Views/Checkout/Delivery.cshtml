@@ -3,33 +3,26 @@
 	ViewData["Title"] = "Delivery";
 }
 
-@if (ViewBag.IsAddress == "false")
+@using (Html.BeginForm())
 {
-	@using (Html.BeginForm())
-	{
-		@Html.ValidationSummary(true)
-		<fieldset>
+	@Html.ValidationSummary(true)
+	<fieldset>
 
-			<div class="editor-field">
-				<p>
-					@Html.HiddenFor(model => model.Id)
-				</p>
-			</div>
-			<div class="editor-label">
-				Input the address for Delivery
-			</div>
-			<div class="editor-field">
-				@Html.EditorFor(model => model.Address, new {required="required"})
-				@Html.ValidationMessageFor(model => model.Address)
-			</div>
-		</fieldset>
+		<div class="editor-field">
+			<p>
+				@Html.HiddenFor(model => model.Id)
+			</p>
+		</div>
+		<div class="editor-label">
+			Input the address for Delivery
+		</div>
+		<div class="editor-field">
+			@Html.EditorFor(model => model.Address, new { required = "required" })
+			@Html.ValidationMessageFor(model => model.Address)
+		</div>
+	</fieldset>
 
-		<br />
-		<p>
-			<input type="submit" value="Add Address" />
-		</p>
-	}
-}
-else
-{
+	<br />
+	<input type="submit" value="Add Address" class="btn btn-outline-primary" />
+
 }

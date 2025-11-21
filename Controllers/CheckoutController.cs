@@ -78,18 +78,29 @@ namespace PizzaStore.Controllers
             ViewBag.IsAddress = "false";
             return View();
         }
-
         public IActionResult Confirm(string method)
         {
             Customer customer = GetCustomerFromTD();
             ViewBag.Method = method;
+            ViewBag.Address = customer.Address;
+
+
             Order order = context.Orders.Single(o => o.CustomerId == customer.Id);
             DateTime dateTime = DateTime.Now;
             
             OrderBusinessLayer orderBusinessLayer = new OrderBusinessLayer();
             orderBusinessLayer.AddOrderPlaced(order.Id, dateTime);
 
-            return View(customer);
+            List<OrderDetail> orderDetails = context.OrderDetails
+                .Where(oD => oD.OrderId == order.Id)
+                .ToList();
+
+            foreach (OrderDetail orderDetail in orderDetails)
+            {
+                orderDetail.Product = context.Products.Single(p => p.Id == orderDetail.ProductId);
+            }
+
+            return View(orderDetails);
         }
     }
 }
