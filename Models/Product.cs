@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PizzaStore.Models

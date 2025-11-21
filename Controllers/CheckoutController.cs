@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using PizzaStore.Data;
 using PizzaStore.Models;
 using PizzaStore.Models.ModelBusinessLayer;
-using System.Diagnostics;
-using static NuGet.Packaging.PackagingConstants;
 
 namespace PizzaStore.Controllers
 {

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace PizzaStore.Models
+﻿namespace PizzaStore.Models
 {
     public class OrderDetail
     {

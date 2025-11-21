@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PizzaStore.Data;
 using PizzaStore.Models;
 using PizzaStore.Models.ModelBusinessLayer;

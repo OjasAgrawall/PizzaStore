@@ -1,12 +1,8 @@
 ﻿using Humanizer;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using PizzaStore.Data;
 using PizzaStore.Models;
 using PizzaStore.Models.ModelBusinessLayer;
-using System.Diagnostics;
-using System.Globalization;
-using static NuGet.Packaging.PackagingConstants;
 
 namespace PizzaStore.Controllers
 {

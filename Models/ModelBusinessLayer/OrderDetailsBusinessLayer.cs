@@ -1,6 +1,4 @@
 ﻿using Microsoft.Data.SqlClient;
-using Microsoft.Identity.Client;
-using PizzaStore.Data;
 using System.Data;
 
 namespace PizzaStore.Models.ModelBusinessLayer
