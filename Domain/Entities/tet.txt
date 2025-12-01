@@ -1,0 +1,20 @@
+﻿Presentation (Web)
+- Views
+- Backed up by View Models
+A view model is a general model that is passed to a view so that the view has the structure 
+of the model
+- Controllers
+
+Application (Business Rules)
+- Services
+- DTO (Data transfer object) These are view models that are directly related to an entity, so 
+if they are linked by id, basically a view model that can be used to specify real data
+
+Domain
+- Contains the domain objects or more simply
+- Entities
+
+Infrastructure (Data Access)
+- Repositories
+- Data Context
+- Migrations

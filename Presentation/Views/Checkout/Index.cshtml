@@ -1,0 +1,44 @@
+﻿@model IEnumerable<PizzaStore.Domain.Entities.OrderDetail>
+
+@{
+	ViewData["Title"] = "Checkout";
+}
+
+<h3>Checkout</h3>
+
+@foreach (OrderDetail orderDetail in Model)
+{
+	<br />
+	<h6>
+		@orderDetail.Product.Name
+	</h6>
+	<div>
+		Quantity: @orderDetail.Quantity
+	</div>
+
+}
+<div>
+	The total cost of the cart is:
+	$@ViewData["Total"]
+</div>
+<div>
+	<a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">
+		Add more
+	</a>
+</div>
+
+<br />
+
+<div>
+	Please select the pickup method
+</div>
+
+<div>
+	<a asp-controller="Checkout" asp-action="Confirm" asp-route-method="Pickup" class="btn btn-outline-primary">
+		Pickup
+	</a>
+	|
+	<a asp-controller="Checkout" asp-action="Delivery" class="btn btn-outline-primary">
+		Delivery
+	</a>
+</div>

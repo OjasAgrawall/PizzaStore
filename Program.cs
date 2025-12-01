@@ -1,5 +1,6 @@
-using PizzaStore.Data;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
+using PizzaStore.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,15 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 // Add DBcontext
 builder.Services.AddDbContext<PizzaContext>(options => options.UseSqlServer(connectionString));
+
+builder.Services.AddControllersWithViews();
+
+builder.Services.Configure<RazorViewEngineOptions>(o =>
+{
+    o.ViewLocationFormats.Clear();
+    o.ViewLocationFormats.Add("/Presentation/Views/{1}/{0}" + RazorViewEngine.ViewExtension);
+    o.ViewLocationFormats.Add("/Presentation/Views/Shared/{0}" + RazorViewEngine.ViewExtension);
+});
 
 var app = builder.Build();
 
@@ -34,5 +44,6 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
+  
 
 app.Run();

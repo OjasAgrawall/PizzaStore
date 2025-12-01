@@ -1,0 +1,52 @@
+﻿@model IEnumerable<PizzaStore.Domain.Entities.OrderDetail>
+
+@{
+	ViewData["Title"] = "Cart";
+}
+
+@if (Model.FirstOrDefault() == null)
+{
+	<p>Your cart is empty!</p>
+	<a asp-action="Index" class="btn btn-outline-secondary">
+		Add a pizza
+	</a>
+}
+
+else
+{
+	
+		@foreach (OrderDetail orderDetail in Model)
+		{
+			<h6>
+				@orderDetail.Product.Name
+			</h6>
+		<ul class="list-unstyled">
+			<li>
+				Quantity: @orderDetail.Quantity
+			</li>
+			<li>
+				$@orderDetail.Product.Price each
+			</li>
+			<li>
+				$@(orderDetail.Product.Price* orderDetail.Quantity) Total
+			</li>
+			<li>
+				<a asp-action="EditCart" asp-route-id="@orderDetail.Id " class="btn btn-outline-secondary btn-sm">
+					Edit Item Quantity
+				</a>
+			</li>	
+			<li>
+				<a asp-action="Delete" asp-route-id="@orderDetail.Id" class="btn btn-danger btn-close"></a>
+			</li>
+			</ul>
+			<br />
+		}
+	<p>
+		The total cost of the cart is:
+		$@ViewData["Total"]
+	</p>
+
+	<a asp-controller="Checkout" asp-action="Index" class="btn btn-outline-primary">
+		Checkout
+	</a>
+}
