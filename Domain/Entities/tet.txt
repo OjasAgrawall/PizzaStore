@@ -1,8 +1,8 @@
 ﻿Presentation (Web)
 - Views
 - Backed up by View Models
-A view model is a general model that is passed to a view so that the view has the structure 
-of the model
+A view model is a general model that is passed to a view so that
+the view has the structure of the model
 - Controllers
 
 Application (Business Rules)

@@ -60,7 +60,7 @@ namespace PizzaStore.Presentation.Controllers
             OrderDetail orderDetail = new OrderDetail {Quantity = quantity, ProductId = Id, OrderId = order.Id, Product = product, Order = order};
 
             //Add orderdetails to db
-            OrderDetailsBusinessLayer orderDetailsBusinessLayer = new OrderDetailsBusinessLayer();
+            OrderDetailsRepository orderDetailsBusinessLayer = new OrderDetailsRepository(context);
             orderDetailsBusinessLayer.AddItem(orderDetail.Product, orderDetail.Quantity, orderDetail.OrderId);
 
             List<OrderDetail> orderDetails = context.OrderDetails
@@ -119,7 +119,7 @@ namespace PizzaStore.Presentation.Controllers
             if (Quantity > 0)
             {
 
-                OrderDetailsBusinessLayer orderDetailsBusinessLayer = new OrderDetailsBusinessLayer();
+                OrderDetailsRepository orderDetailsBusinessLayer = new OrderDetailsRepository(context);
                 orderDetailsBusinessLayer.UpdateItem(Id, Quantity);
                 return RedirectToAction("ViewCart");
             }
@@ -133,7 +133,7 @@ namespace PizzaStore.Presentation.Controllers
         [HttpGet]
         public IActionResult Delete(int Id)
         {
-            OrderDetailsBusinessLayer orderDetailsBusinessLayer = new OrderDetailsBusinessLayer();
+            OrderDetailsRepository orderDetailsBusinessLayer = new OrderDetailsRepository(context);
             orderDetailsBusinessLayer.DeleteItem(Id);
             return RedirectToAction("ViewCart");
         }

@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PizzaStore.Application.Interfaces;
+using PizzaStore.Application.Services;
 using PizzaStore.Domain.Entities;
 using PizzaStore.Infrastructure.Data;
 using PizzaStore.Infrastructure.ModelBusinessLayer;
@@ -6,18 +8,12 @@ using System.Diagnostics;
 
 namespace PizzaStore.Presentation.Controllers
 {
-    public class AddProductController : Controller
+    public class AddProductController(IProductService productService) : Controller
     {
-        private readonly PizzaContext context;
-
-        public AddProductController(PizzaContext _context)
-        {
-            context = _context;
-        }
         public IActionResult Index()
         {
 
-            List<Product> allProducts = context.Products.ToList();
+            List<Product> allProducts = productService.GetAllProducts().ToList();
 
             return View(allProducts);
         }
@@ -34,32 +30,25 @@ namespace PizzaStore.Presentation.Controllers
 
             if (ModelState.IsValid)
             {
-                ProductBusinessLayer productBusinessLayer = new ProductBusinessLayer();
-                productBusinessLayer.AddProduct(products);
+                productService.AddProduct(products);
                 return RedirectToAction("Index");
             }
             return View();
         }
 
         [HttpGet]
-        public IActionResult Edit(int id) 
+        public IActionResult Edit(int id)
         {
-            Product products = context.Products.Single(pizza => pizza.Id == id);
+            Product products = productService.GetById(id);
             return View(products);
         }
 
         [HttpPost]
         public IActionResult Edit(Product products)
         {
-            Debug.WriteLine(products.Id);
-
-
             if (ModelState.IsValid)
             {
-                Debug.WriteLine(products.Id);
-
-                ProductBusinessLayer productBusinessLayer = new ProductBusinessLayer();
-                productBusinessLayer.UpdateProduct(products);
+                productService.UpdateProduct(products);
                 return RedirectToAction("Index");
             }
             return View(products);
@@ -68,9 +57,7 @@ namespace PizzaStore.Presentation.Controllers
         [HttpPost]
         public IActionResult Delete(int id)
         {
-            ProductBusinessLayer productBusinessLayer = new ProductBusinessLayer();
-            productBusinessLayer.DeleteProduct(id);
-
+            productService.DeleteProduct(id);
             return RedirectToAction("Index");
         }
 

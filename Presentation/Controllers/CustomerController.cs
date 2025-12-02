@@ -54,13 +54,13 @@ namespace PizzaStore.Presentation.Controllers
                     ViewBag.DupEmail = "True";
                     return View();
                 }
-                CustomerBusinessLayer customerBusinessLayer = new CustomerBusinessLayer();
+                CustomerRepository customerBusinessLayer = new CustomerRepository(context);
                 customerBusinessLayer.AddCustomer(customer);
 
                 Order order = new Order();
                 order.Customer = context.Customer.Single(c => c.Email == customer.Email);
 
-                OrderBusinessLayer orderBusinessLayer = new OrderBusinessLayer();
+                OrderRepository orderBusinessLayer = new OrderRepository(context);
                 orderBusinessLayer.AddCustomerId(order.Customer.Id);
 
                 return RedirectToAction("Login", "Customer");

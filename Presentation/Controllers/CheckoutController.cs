@@ -67,7 +67,7 @@ namespace PizzaStore.Presentation.Controllers
         {
             if (Address != null)
             {
-                CustomerBusinessLayer customerBusinessLayer = new CustomerBusinessLayer();
+                CustomerRepository customerBusinessLayer = new CustomerRepository(context);
                 customerBusinessLayer.AddAddress(Id, Address);
                 return RedirectToAction("Confirm", new { method = "delivery" });
             }
@@ -85,7 +85,7 @@ namespace PizzaStore.Presentation.Controllers
             Order order = context.Orders.Single(o => o.CustomerId == customer.Id);
             DateTime dateTime = DateTime.Now;
             
-            OrderBusinessLayer orderBusinessLayer = new OrderBusinessLayer();
+            OrderRepository orderBusinessLayer = new OrderRepository(context);
             orderBusinessLayer.AddOrderPlaced(order.Id, dateTime);
 
             List<OrderDetail> orderDetails = context.OrderDetails

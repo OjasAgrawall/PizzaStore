@@ -1,6 +1,10 @@
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
+using PizzaStore.Application.Interfaces;
+using PizzaStore.Application.Services;
 using PizzaStore.Infrastructure.Data;
+using PizzaStore.Infrastructure.Interfaces;
+using PizzaStore.Infrastructure.ModelBusinessLayer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +17,8 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 // Add DBcontext
 builder.Services.AddDbContext<PizzaContext>(options => options.UseSqlServer(connectionString));
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 builder.Services.Configure<RazorViewEngineOptions>(o =>
 {
