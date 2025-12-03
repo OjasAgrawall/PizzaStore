@@ -1,5 +1,6 @@
 ﻿using Humanizer;
 using Microsoft.AspNetCore.Mvc;
+using PizzaStore.Application.Interfaces;
 using PizzaStore.Domain.Entities;
 using PizzaStore.Infrastructure.Data;
 using PizzaStore.Infrastructure.ModelBusinessLayer;
@@ -7,14 +8,11 @@ using PizzaStore.Infrastructure.ModelBusinessLayer;
 namespace PizzaStore.Presentation.Controllers
 {
 
-    public class CustomerController : Controller
+    public class CustomerController( 
+        ICustomerService customerService,
+        IOrderService orderService
+        ) : Controller
     {
-        private readonly PizzaContext context;
-
-        public CustomerController(PizzaContext _context)
-        {
-            context = _context;
-        }
 
         [HttpGet]
         public IActionResult Login()
@@ -25,13 +23,11 @@ namespace PizzaStore.Presentation.Controllers
         [HttpPost]
         public IActionResult Login(string Email, string Password)
         {
-            if (context.Customer.Any(e => e.Email == Email && e.Password == Password)){
-                Customer customer = (Customer)context.Customer.Single(e => e.Email == Email && e.Password == Password);
-                customer.FirstName = customer.FirstName.Titleize();
-                customer.LastName = customer.LastName.Titleize();
+            if (customerService.UserMatch(Email, Password) != null)
+            {
+                Customer customer = customerService.UserMatch(Email, Password);
                 TempData["Customer"] = customer.FirstName + " " + customer.LastName;
                 TempData["CustomerId"] = customer.Id.ToString();
-
                 return RedirectToAction("Index", "Home");
             }
             ViewBag.Exists = "False";
@@ -49,19 +45,17 @@ namespace PizzaStore.Presentation.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (context.Customer.Any(e => e.Email == customer.Email))
+                if (customerService.GetByEmail(customer.Email) != null)
                 {
                     ViewBag.DupEmail = "True";
                     return View();
                 }
-                CustomerRepository customerBusinessLayer = new CustomerRepository(context);
-                customerBusinessLayer.AddCustomer(customer);
+                customerService.AddCustomer(customer);
 
-                Order order = new Order();
-                order.Customer = context.Customer.Single(c => c.Email == customer.Email);
+                int customerId = customerService.GetByEmail(customer.Email).Id;
 
-                OrderRepository orderBusinessLayer = new OrderRepository(context);
-                orderBusinessLayer.AddCustomerId(order.Customer.Id);
+                orderService.AddCustomerId(customerId);
+
 
                 return RedirectToAction("Login", "Customer");
             }

@@ -7,14 +7,8 @@ using System.Data;
 
 namespace PizzaStore.Infrastructure.ModelBusinessLayer
 {
-    public class CustomerRepository : ICustomerRepository
+    public class CustomerRepository(PizzaContext context) : ICustomerRepository
     {
-        private readonly PizzaContext context;
-
-        public CustomerRepository(PizzaContext _context)
-        {
-            context = _context;
-        }
         public void AddCustomer(Customer customer)
         {
             context.Database.ExecuteSqlInterpolated($"EXECUTE spAddCustomer {customer.FirstName}, {customer.LastName}, {customer.Email}, {customer.Password}, {customer.Address}, {customer.Phone}");
@@ -23,6 +17,11 @@ namespace PizzaStore.Infrastructure.ModelBusinessLayer
         public void AddAddress(int id, string address)
         {
             context.Database.ExecuteSqlInterpolated($"EXECUTE spAddCustomerAddress {id}, {address}");
+        }
+
+        public IEnumerable<Customer> GetAll()
+        {
+            return context.Customer.ToList();
         }
     }
 }

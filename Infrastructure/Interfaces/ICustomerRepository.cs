@@ -7,5 +7,7 @@ namespace PizzaStore.Infrastructure.Interfaces
         public void AddCustomer(Customer customer);
 
         public void AddAddress(int id, string address);
+
+        public IEnumerable<Customer> GetAll();
     }
 }

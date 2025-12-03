@@ -6,7 +6,6 @@ namespace PizzaStore.Application.Interfaces
 {
     public interface IOrderDetailsService : IOrderDetailsRepository
     {
-        public void AddItem(Product product, int quantity, int orderId);
         public void CombineDuplicates();
 
         public IEnumerable<OrderDetail> GetByOrderId(int orderId);
