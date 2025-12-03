@@ -20,6 +20,14 @@ builder.Services.AddDbContext<PizzaContext>(options => options.UseSqlServer(conn
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
+builder.Services.AddScoped<IOrderDetailsService, OrderDetailsService>();
+builder.Services.AddScoped<IOrderDetailsRepository, OrderDetailsRepository>();
+
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+
+
+
 builder.Services.Configure<RazorViewEngineOptions>(o =>
 {
     o.ViewLocationFormats.Clear();

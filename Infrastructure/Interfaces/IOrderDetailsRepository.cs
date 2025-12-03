@@ -10,5 +10,7 @@ namespace PizzaStore.Infrastructure.Interfaces
 
         public void UpdateItem(int id, int quantity);
 
+        public IEnumerable<OrderDetail> GetAllItems();
+
     }
 }

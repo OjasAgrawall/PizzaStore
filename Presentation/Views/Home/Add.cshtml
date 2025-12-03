@@ -15,9 +15,9 @@
 		<div class="editor-field">
 			<p>
 				Product ID:
-				@Html.DisplayFor(model => model.ProductId)
-				@Html.HiddenFor(model => model.ProductId)
-				@Html.ValidationMessageFor(model => model.ProductId)
+				@Html.DisplayFor(model => model.Product.Id)
+				@Html.HiddenFor(model => model.Product.Id)
+				@Html.ValidationMessageFor(model => model.Product.Id)
 			</p>
 		</div>
 
@@ -26,12 +26,12 @@
 		</div>
 		<div class="editor-field">
 			@Html.EditorFor(Model => Model.Quantity)
-			@if (ViewBag.Negative == "true")
-			{
+			@if (ViewBag.QuantityError == "true"){
 				<a style="color: red">
-					The quantity must be greater than 0
+					@Html.ValidationMessageFor(Model => Model.Quantity, "The quantity must be greater than 0")
 				</a>
 			}
+			
 		</div>
 		
 

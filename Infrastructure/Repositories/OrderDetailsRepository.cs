@@ -7,14 +7,8 @@ using System.Data;
 
 namespace PizzaStore.Infrastructure.ModelBusinessLayer
 {
-    public class OrderDetailsRepository : IOrderDetailsRepository
+    public class OrderDetailsRepository(PizzaContext context) : IOrderDetailsRepository
     {
-        private readonly PizzaContext context;
-
-        public OrderDetailsRepository(PizzaContext _context)
-        {
-            context = _context;
-        }
         public void AddItem(Product product, int quantity, int orderId)
         {
             context.Database.ExecuteSqlInterpolated($"EXECUTE spAddItem {quantity}, {product.Id}, {orderId}");
@@ -26,6 +20,11 @@ namespace PizzaStore.Infrastructure.ModelBusinessLayer
         public void UpdateItem(int id, int quantity)
         {
             context.Database.ExecuteSqlInterpolated($"EXECUTE spUpdateItem {id}, {quantity}");
+        }
+
+        public IEnumerable<OrderDetail> GetAllItems()
+        {
+            return context.OrderDetails.ToList();
         }
     }
 }

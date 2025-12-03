@@ -7,14 +7,9 @@ using System.Data;
 
 namespace PizzaStore.Infrastructure.ModelBusinessLayer
 {
-    public class OrderRepository : IOrderRepository
+    public class OrderRepository(PizzaContext context) : IOrderRepository
     {
-        private readonly PizzaContext context;
-
-        public OrderRepository(PizzaContext _context)
-        {
-            context = _context;
-        }
+    
         public void AddCustomerId(int CustomerId)
         {
             context.Database.ExecuteSqlInterpolated($"EXECUTE spAddDetailsToOrder {CustomerId}");
@@ -22,6 +17,16 @@ namespace PizzaStore.Infrastructure.ModelBusinessLayer
         public void AddOrderPlaced(int Id, DateTime orderPlaced)
         {
             context.Database.ExecuteSqlInterpolated($"EXECUTE spAddDetailsToOrder {Id}, {orderPlaced}");
+        }
+
+        public Order GetById(int id)
+        {
+           return context.Orders.Where(o => o.Id == id).First();
+        }
+
+        public Order GetByCustomerId(int id)
+        {
+            return context.Orders.Where(o => o.CustomerId == id).First();
         }
     }
 }

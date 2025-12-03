@@ -1,24 +1,20 @@
 using Microsoft.AspNetCore.Mvc;
+using PizzaStore.Application.Interfaces;
 using PizzaStore.Domain.Entities;
 using PizzaStore.Infrastructure.Data;
 using PizzaStore.Infrastructure.ModelBusinessLayer;
 
 namespace PizzaStore.Presentation.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController(PizzaContext context, 
+        IProductService productService, 
+        IOrderService orderService, 
+        IOrderDetailsService orderDetailsService) : Controller
     {
-
-        private readonly PizzaContext context;
-
-        public HomeController(PizzaContext _context)
-        {
-            context = _context;
-        }
-
         public IActionResult Index()
         {
 
-            List<Product> products = context.Products.ToList();
+            List<Product> products = productService.GetAllProducts().ToList();
 
             return View(products);
         }
@@ -30,8 +26,7 @@ namespace PizzaStore.Presentation.Controllers
             {
                 return RedirectToAction("Login", "Customer");
             }
-
-            Product product = context.Products.Single(p => p.Id == id);
+            Product product = productService.GetById(id);
             OrderDetail detail = new OrderDetail();
             detail.Product = product;
             detail.ProductId = product.Id;
@@ -39,43 +34,23 @@ namespace PizzaStore.Presentation.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(int Id, int quantity)
+        public IActionResult Add(int id, int quantity)
         {
-
-            Product product = context.Products.Single(p => p.Id == Id);
-
-            if (quantity <= 0)
-            {
-                OrderDetail detail = new OrderDetail();
-                detail.Product = product;
-                detail.ProductId = product.Id;
-                ViewBag.Negative = "true";
-                return View(detail);
-            }
+            //id is product id
+            Product product = productService.GetById(id);
 
             int customerId = int.Parse(TempData.Peek("CustomerId").ToString());
 
-            //Link orderDetail to Product and Order, and give it the quantity, productid, and orderid 
-            Order order = context.Orders.Single(o => o.CustomerId == customerId);
-            OrderDetail orderDetail = new OrderDetail {Quantity = quantity, ProductId = Id, OrderId = order.Id, Product = product, Order = order};
+            Order order = orderService.GetByCustomerId(customerId);
 
-            //Add orderdetails to db
-            OrderDetailsRepository orderDetailsBusinessLayer = new OrderDetailsRepository(context);
-            orderDetailsBusinessLayer.AddItem(orderDetail.Product, orderDetail.Quantity, orderDetail.OrderId);
+            orderDetailsService.AddItem(product, quantity, order.Id);
 
-            List<OrderDetail> orderDetails = context.OrderDetails
-                .OrderBy(order => order.ProductId)
-                .ToList();
-
-            for (int i = 0; i < orderDetails.ToArray().Length - 1; i++)
+            if (quantity <= 0)
             {
-                if (orderDetails[i].ProductId == orderDetails[i + 1].ProductId && orderDetails[i].OrderId == orderDetails[i + 1].OrderId)
-                {
-                    int totalQuantity = orderDetails[i + 1].Quantity + orderDetails[i].Quantity;
-                    orderDetailsBusinessLayer.UpdateItem(orderDetails[i + 1].Id, totalQuantity);
-                    orderDetailsBusinessLayer.DeleteItem(orderDetails[i].Id);
-                }
+                ViewBag.QuantityError = "true";
+                return View(orderDetailsService.IsQuantityPositive(product.Id, quantity));
             }
+
             return RedirectToAction("Index");
         }
 
@@ -88,53 +63,44 @@ namespace PizzaStore.Presentation.Controllers
             }
 
             int customerId = int.Parse(TempData.Peek("CustomerId").ToString());
-            int OrderId = context.Orders.Single(o => o.CustomerId == customerId).Id;
+            int OrderId = orderService.GetByCustomerId(customerId).Id;
 
-            List<OrderDetail> orderDetails = context.OrderDetails
-                .Where(orderD => orderD.OrderId == OrderId)
-                .ToList();
+            List<OrderDetail> orderDetails = orderDetailsService.GetByOrderId(OrderId).ToList();
 
-            decimal totalPrice = 0;
-            foreach (OrderDetail orderDetail in orderDetails)
-            {
-                orderDetail.Product = context.Products.Single(p => p.Id == orderDetail.ProductId);
-                totalPrice += orderDetail.Product.Price * orderDetail.Quantity;
-            }
+            decimal totalPrice = orderDetailsService.TotalPrice(OrderId);
+
             ViewData["Total"] = totalPrice;
             return View(orderDetails);
         }
 
         [HttpGet]
-        public IActionResult EditCart(int Id)
+        public IActionResult EditCart(int id)
         {
-            OrderDetail order = context.OrderDetails.Single(p => p.Id == Id);
+            OrderDetail order = orderDetailsService.GetById(id);
 
-            order.Product = context.Products.Single(p => p.Id == order.ProductId);
+            order.Product = productService.GetById(order.ProductId);
             return View(order);
         }
 
         [HttpPost]
-        public IActionResult EditCart(int Id, int Quantity)
+        public IActionResult EditCart(int id, int Quantity)
         {
             if (Quantity > 0)
             {
-
-                OrderDetailsRepository orderDetailsBusinessLayer = new OrderDetailsRepository(context);
-                orderDetailsBusinessLayer.UpdateItem(Id, Quantity);
+                orderDetailsService.UpdateItem(id, Quantity);
                 return RedirectToAction("ViewCart");
             }
-
-            OrderDetail order = context.OrderDetails.Single(o => o.Id == Id);
-            order.Product = context.Products.Single(p => p.Id == order.ProductId);
-            order.Quantity = Quantity;
-            return View(order);
+            OrderDetail orderDetail = orderDetailsService.GetById(id);
+            orderDetail.Product = productService.GetById(orderDetail.ProductId);
+            orderDetail.Quantity = Quantity;
+            
+            return View(orderDetail);
         }
 
         [HttpGet]
-        public IActionResult Delete(int Id)
+        public IActionResult Delete(int id)
         {
-            OrderDetailsRepository orderDetailsBusinessLayer = new OrderDetailsRepository(context);
-            orderDetailsBusinessLayer.DeleteItem(Id);
+            orderDetailsService.DeleteItem(id);
             return RedirectToAction("ViewCart");
         }
     }
