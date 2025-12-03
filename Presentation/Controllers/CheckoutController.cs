@@ -1,43 +1,36 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PizzaStore.Application.Interfaces;
+using PizzaStore.Application.Services;
 using PizzaStore.Domain.Entities;
 using PizzaStore.Infrastructure.Data;
 using PizzaStore.Infrastructure.ModelBusinessLayer;
 
 namespace PizzaStore.Presentation.Controllers
 {
-    public class CheckoutController : Controller
+    public class CheckoutController(
+        IOrderService orderService,
+        IOrderDetailsService orderDetailsService,
+        ICustomerService customerService,
+        IProductService productService) : Controller
     {
-        private readonly PizzaContext context;
-
-        public CheckoutController(PizzaContext _context)
-        {
-            context = _context;
-        }
         public Customer GetCustomerFromTD()
         {
             Customer customer = new Customer();
 
-
             int customerId = int.Parse(TempData.Peek("CustomerId").ToString());
-            customer = context.Customer.Single(c => c.Id == customerId);
+            customer = customerService.GetById(customerId);
 
             return customer;
         }
         public IActionResult Index()
         {
-            int customerId = int.Parse(TempData.Peek("CustomerId").ToString());
-            int OrderId = context.Orders.Single(o => o.CustomerId == customerId).Id;
+            int customerId = GetCustomerFromTD().Id;
+            int OrderId = orderService.GetByCustomerId(customerId).Id;
 
-            List<OrderDetail> orderDetails = context.OrderDetails
-                .Where(orderD => orderD.OrderId == OrderId)
-                .ToList();
+            List<OrderDetail> orderDetails = orderDetailsService.GetByOrderId(OrderId).ToList(); 
 
-            decimal totalPrice = 0;
-            foreach (OrderDetail orderDetail in orderDetails)
-            {
-                orderDetail.Product = context.Products.Single(p => p.Id == orderDetail.ProductId);
-                totalPrice += orderDetail.Product.Price * orderDetail.Quantity;
-            }
+            decimal totalPrice = orderDetailsService.TotalPrice(OrderId);
+
             ViewData["Total"] = totalPrice;
 
             return View(orderDetails);
@@ -63,12 +56,11 @@ namespace PizzaStore.Presentation.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delivery(int Id, string Address)
+        public IActionResult Delivery(int id, string address)
         {
-            if (Address != null)
+            if (address != null)
             {
-                CustomerRepository customerBusinessLayer = new CustomerRepository(context);
-                customerBusinessLayer.AddAddress(Id, Address);
+                customerService.AddAddress(id, address);
                 return RedirectToAction("Confirm", new { method = "delivery" });
             }
 
@@ -81,20 +73,14 @@ namespace PizzaStore.Presentation.Controllers
             ViewBag.Method = method;
             ViewBag.Address = customer.Address;
 
-
-            Order order = context.Orders.Single(o => o.CustomerId == customer.Id);
-            DateTime dateTime = DateTime.Now;
+            Order order = orderService.GetByCustomerId(customer.Id);
+            orderService.AddOrderPlaced(order.Id, DateTime.Now);
             
-            OrderRepository orderBusinessLayer = new OrderRepository(context);
-            orderBusinessLayer.AddOrderPlaced(order.Id, dateTime);
-
-            List<OrderDetail> orderDetails = context.OrderDetails
-                .Where(oD => oD.OrderId == order.Id)
-                .ToList();
+            List<OrderDetail> orderDetails = orderDetailsService.GetByOrderId(order.Id).ToList();
 
             foreach (OrderDetail orderDetail in orderDetails)
             {
-                orderDetail.Product = context.Products.Single(p => p.Id == orderDetail.ProductId);
+                orderDetail.Product = productService.GetById(orderDetail.ProductId);
             }
 
             return View(orderDetails);

@@ -6,7 +6,7 @@ using PizzaStore.Infrastructure.ModelBusinessLayer;
 
 namespace PizzaStore.Presentation.Controllers
 {
-    public class HomeController(PizzaContext context, 
+    public class HomeController( 
         IProductService productService, 
         IOrderService orderService, 
         IOrderDetailsService orderDetailsService) : Controller
