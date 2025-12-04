@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PizzaStore.Application.Interfaces;
-using PizzaStore.Application.Services;
 using PizzaStore.Domain.Entities;
-using PizzaStore.Infrastructure.Data;
-using PizzaStore.Infrastructure.ModelBusinessLayer;
-using System.Diagnostics;
 
 namespace PizzaStore.Presentation.Controllers
 {

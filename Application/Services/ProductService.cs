@@ -1,14 +1,12 @@
 ﻿using PizzaStore.Application.Interfaces;
 using PizzaStore.Domain.Entities;
-using PizzaStore.Infrastructure.Data;
 using PizzaStore.Infrastructure.Interfaces;
-using PizzaStore.Infrastructure.ModelBusinessLayer;
 
 namespace PizzaStore.Application.Services
 {
     public class ProductService(IProductRepository productRepository) : IProductService
     {
-        public void AddProduct(Product product) 
+        public void AddProduct(Product product)
         {
             productRepository.AddProduct(product);
         }
@@ -35,6 +33,6 @@ namespace PizzaStore.Application.Services
             return product;
         }
 
-        
+
     }
 }

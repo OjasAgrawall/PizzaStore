@@ -16,7 +16,7 @@ namespace PizzaStore.Infrastructure.Data
 
 
 
-        public PizzaContext(DbContextOptions options) : base(options) {}
-        
+        public PizzaContext(DbContextOptions options) : base(options) { }
+
     }
-} 
+}

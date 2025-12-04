@@ -1,14 +1,11 @@
-﻿using Humanizer;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PizzaStore.Application.Interfaces;
 using PizzaStore.Domain.Entities;
-using PizzaStore.Infrastructure.Data;
-using PizzaStore.Infrastructure.ModelBusinessLayer;
 
 namespace PizzaStore.Presentation.Controllers
 {
 
-    public class CustomerController( 
+    public class CustomerController(
         ICustomerService customerService,
         IOrderService orderService
         ) : Controller

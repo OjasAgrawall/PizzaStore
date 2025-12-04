@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using PizzaStore.Domain.Entities;
+﻿using PizzaStore.Domain.Entities;
 using PizzaStore.Infrastructure.Interfaces;
 
 namespace PizzaStore.Application.Interfaces
@@ -11,6 +10,10 @@ namespace PizzaStore.Application.Interfaces
         public IEnumerable<OrderDetail> GetByOrderId(int orderId);
 
         public OrderDetail GetById(int id);
+
+        public void Increase(int id);
+
+        public void Decrease(int id);
 
         public decimal TotalPrice(int OrderId);
 

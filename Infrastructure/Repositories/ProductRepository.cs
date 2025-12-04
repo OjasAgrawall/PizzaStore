@@ -1,11 +1,7 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using PizzaStore.Application.Services;
+﻿using Microsoft.EntityFrameworkCore;
 using PizzaStore.Domain.Entities;
 using PizzaStore.Infrastructure.Data;
 using PizzaStore.Infrastructure.Interfaces;
-using System.Data;
-using System.Xml.Linq;
 
 namespace PizzaStore.Infrastructure.ModelBusinessLayer
 {

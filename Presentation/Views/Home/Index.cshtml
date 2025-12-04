@@ -3,30 +3,36 @@
 @{
 	ViewData["Title"] = "Home Page";
 }
-
 <style>
-	table {
-		width: 50%;
+	.col:hover {
+		background-color: #d0d0d0;
 	}
-
-	td {
-		padding: 5px;
-		border: 1px solid #ddd;
-	}
-
-	tr:hover {
+	.col{
+		padding-top:15px;
+		padding-bottom: 15px;
 		background-color: #f1f1f1;
+		margin: 10px;
+		width: 31%
+	}
+
+	#product_name {
+		text-align: center
 	}
 </style>
-<table>
-	<h2>Pizzas</h2>
 
-	@foreach(Product product in @Model){
-		<tr onclick="location.href = '@Url.Action("Add", "Home", new { id = product.Id })'">
-			<td style="width:20%">@product.Name</td>
+<h2>Menu</h2>
 
-			<td style="width:20%">@product.Price</td>
-		</tr>	
-	}
-	
-</table>
+<div class="container">
+	<div class="row row-cols-4" >
+		@foreach (Product product in @Model)
+		{
+			<div class="col" onclick="location.href = '@Url.Action("Add", "Home", new { id = product.Id })'">
+				<h6 id="product_name">@product.Name</h6>
+
+				<img src="~/css/ProductImages/@product.Image"  width="100%"/>
+
+				<p>@product.Descriptions</p>
+			</div>
+		}
+	</div>
+</div>

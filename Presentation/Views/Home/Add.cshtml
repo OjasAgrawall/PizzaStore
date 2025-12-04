@@ -1,6 +1,6 @@
 ﻿@model PizzaStore.Domain.Entities.OrderDetail;
 @{
-    ViewData["Title"] = "Wow";
+	ViewData["Title"] = Model.Product.Name;
 }
 
 
@@ -8,16 +8,24 @@
 
 @using (Html.BeginForm())
 {
-    <fieldset>
-        <legend>@Model.Product.Name</legend>
-        <p>@Model.Product.Descriptions</p>
+	<fieldset>
+		<span>
+			<a asp-action="Index" class="btn btn-outline-secondary">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
+				</svg> 
+				Back
+			</a>
+		</span>
+		<h4 style="text-align:center">@Model.Product.Name</h4>
+
+		<div>
+			<img src="/css/ProductImages/@Model.Product.Image" width="400" />
+		</div>
 
 		<div class="editor-field">
 			<p>
-				Product ID:
-				@Html.DisplayFor(model => model.Product.Id)
 				@Html.HiddenFor(model => model.Product.Id)
-				@Html.ValidationMessageFor(model => model.Product.Id)
 			</p>
 		</div>
 
@@ -26,17 +34,17 @@
 		</div>
 		<div class="editor-field">
 			@Html.EditorFor(Model => Model.Quantity)
-			@if (ViewBag.QuantityError == "true"){
+			@if (ViewBag.QuantityError == "true")
+			{
 				<a style="color: red">
 					@Html.ValidationMessageFor(Model => Model.Quantity, "The quantity must be greater than 0")
 				</a>
 			}
-			
+
 		</div>
-		
+
 
 		<br />
 		<input type="submit" value="Add to Cart" class="btn btn-primary" />
-		<a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
-    </fieldset>
+	</fieldset>
 }

@@ -1,24 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PizzaStore.Application.Interfaces;
-using PizzaStore.Application.Services;
 using PizzaStore.Domain.Entities;
-using PizzaStore.Infrastructure.Data;
-using PizzaStore.Infrastructure.ModelBusinessLayer;
 
 namespace PizzaStore.Presentation.Controllers
 {
     public class CheckoutController(
         IOrderService orderService,
         IOrderDetailsService orderDetailsService,
-        ICustomerService customerService,
-        IProductService productService) : Controller
+        ICustomerService customerService) : Controller
     {
         public Customer GetCustomerFromTD()
         {
-            Customer customer = new Customer();
-
             int customerId = int.Parse(TempData.Peek("CustomerId").ToString());
-            customer = customerService.GetById(customerId);
+            Customer customer = customerService.GetById(customerId);
 
             return customer;
         }
@@ -27,7 +21,7 @@ namespace PizzaStore.Presentation.Controllers
             int customerId = GetCustomerFromTD().Id;
             int OrderId = orderService.GetByCustomerId(customerId).Id;
 
-            List<OrderDetail> orderDetails = orderDetailsService.GetByOrderId(OrderId).ToList(); 
+            List<OrderDetail> orderDetails = orderDetailsService.GetByOrderId(OrderId).ToList();
 
             decimal totalPrice = orderDetailsService.TotalPrice(OrderId);
 
@@ -75,8 +69,8 @@ namespace PizzaStore.Presentation.Controllers
 
             Order order = orderService.GetByCustomerId(customer.Id);
             orderService.AddOrderPlaced(order.Id, DateTime.Now);
-            
-            List<OrderDetail> orderDetails = orderDetailsService.AddProduct(orderDetailsService.GetByOrderId(order.Id)).ToList();    
+
+            List<OrderDetail> orderDetails = orderDetailsService.AddProduct(orderDetailsService.GetByOrderId(order.Id)).ToList();
 
             return View(orderDetails);
         }

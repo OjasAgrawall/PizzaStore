@@ -4,33 +4,33 @@
 	ViewData["Title"] = "Checkout";
 }
 
-<h3>Checkout</h3>
+<h3 style="text-align:center">Checkout</h3>
 
 @foreach (OrderDetail orderDetail in Model)
-{
-	<br />
+{	
 	<h6>
 		@orderDetail.Product.Name
 	</h6>
 	<div>
-		Quantity: @orderDetail.Quantity
+		@orderDetail.Quantity
 	</div>
-
+	<br />
 }
-<div>
-	The total cost of the cart is:
-	$@ViewData["Total"]
-</div>
 <div>
 	<a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">
 		Add more
 	</a>
 </div>
 
+<div>
+	The total cost of the cart is:
+	$@ViewData["Total"]
+</div>
+
 <br />
 
 <div>
-	Please select the pickup method
+	Please select the order type:
 </div>
 
 <div>

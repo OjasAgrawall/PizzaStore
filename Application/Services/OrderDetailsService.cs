@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using PizzaStore.Application.Interfaces;
+﻿using PizzaStore.Application.Interfaces;
 using PizzaStore.Domain.Entities;
 using PizzaStore.Infrastructure.Interfaces;
 
@@ -19,12 +18,29 @@ namespace PizzaStore.Application.Services
 
         public void DeleteItem(int id)
         {
-            orderDetailsRepo.DeleteItem(id);           
+            orderDetailsRepo.DeleteItem(id);
         }
 
         public void UpdateItem(int id, int quantity)
         {
             orderDetailsRepo.UpdateItem(id, quantity);
+        }
+        public void Increase(int id)
+        {
+            OrderDetail orderDetail = GetById(id);
+            orderDetailsRepo.UpdateItem(id, orderDetail.Quantity + 1);
+        }
+        public void Decrease(int id)
+        {
+            OrderDetail orderDetail = GetById(id);
+            if (orderDetail.Quantity == 1)
+            {
+                DeleteItem(orderDetail.Id);
+            }
+            else
+            {
+                orderDetailsRepo.UpdateItem(id, orderDetail.Quantity - 1);
+            }
         }
 
         public IEnumerable<OrderDetail> GetAllItems()

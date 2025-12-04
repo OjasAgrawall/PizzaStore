@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Conventions;
-using PizzaStore.Domain.Entities;
+﻿using PizzaStore.Domain.Entities;
 
 namespace PizzaStore.Infrastructure.Interfaces
 {

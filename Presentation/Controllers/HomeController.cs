@@ -1,14 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using PizzaStore.Application.Interfaces;
 using PizzaStore.Domain.Entities;
-using PizzaStore.Infrastructure.Data;
-using PizzaStore.Infrastructure.ModelBusinessLayer;
 
 namespace PizzaStore.Presentation.Controllers
 {
-    public class HomeController( 
-        IProductService productService, 
-        IOrderService orderService, 
+    public class HomeController(
+        IProductService productService,
+        IOrderService orderService,
         IOrderDetailsService orderDetailsService) : Controller
     {
         public IActionResult Index()
@@ -34,13 +32,10 @@ namespace PizzaStore.Presentation.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(int id, int quantity)
+        public IActionResult Add(int id, int quantity) //id is product id
         {
-            //id is product id
             Product product = productService.GetById(id);
-
             int customerId = int.Parse(TempData.Peek("CustomerId").ToString());
-
             Order order = orderService.GetByCustomerId(customerId);
 
             orderDetailsService.AddItem(product, quantity, order.Id);
@@ -50,7 +45,6 @@ namespace PizzaStore.Presentation.Controllers
                 ViewBag.QuantityError = "true";
                 return View(orderDetailsService.IsQuantityPositive(product.Id, quantity));
             }
-
             return RedirectToAction("Index");
         }
 
@@ -74,27 +68,19 @@ namespace PizzaStore.Presentation.Controllers
         }
 
         [HttpGet]
-        public IActionResult EditCart(int id)
+        public IActionResult QuantityDown(int id)
         {
-            OrderDetail order = orderDetailsService.GetById(id);
+            orderDetailsService.Decrease(id);
 
-            order.Product = productService.GetById(order.ProductId);
-            return View(order);
+            return RedirectToAction("ViewCart");
         }
 
-        [HttpPost]
-        public IActionResult EditCart(int id, int Quantity)
+        [HttpGet]
+        public IActionResult QuantityUp(int id)
         {
-            if (Quantity > 0)
-            {
-                orderDetailsService.UpdateItem(id, Quantity);
-                return RedirectToAction("ViewCart");
-            }
-            OrderDetail orderDetail = orderDetailsService.GetById(id);
-            orderDetail.Product = productService.GetById(orderDetail.ProductId);
-            orderDetail.Quantity = Quantity;
-            
-            return View(orderDetail);
+            orderDetailsService.Increase(id);
+
+            return RedirectToAction("ViewCart");
         }
 
         [HttpGet]

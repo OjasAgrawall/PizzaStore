@@ -12,5 +12,7 @@ namespace PizzaStore.Domain.Entities
         public decimal Price { get; set; }
 
         public string? Descriptions { get; set; }
+
+        public string? Image { get; set; }
     }
 }
