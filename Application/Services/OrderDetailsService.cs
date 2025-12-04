@@ -72,7 +72,7 @@ namespace PizzaStore.Application.Services
             return totalPrice;
         }
 
-        public OrderDetail IsQuantityPositive(int productId, int quantity)
+        public OrderDetail? IsQuantityPositive(int productId, int quantity)
         {
             Product product = productService.GetById(productId);
             if (quantity <= 0)
@@ -82,6 +82,15 @@ namespace PizzaStore.Application.Services
                 return orderDetail;
             }
             return null;
+        }
+
+        public IEnumerable<OrderDetail> AddProduct(IEnumerable<OrderDetail> orderDetails)
+        {
+            foreach (OrderDetail orderDetail in orderDetails)
+            {
+                orderDetail.Product = productService.GetById(orderDetail.ProductId);
+            }
+            return orderDetails;
         }
     }
 }

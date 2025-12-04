@@ -30,7 +30,7 @@ namespace PizzaStore.Application.Services
 
         public Customer GetByEmail(string email)
         {
-            return customerRepository.GetAll().Single(c => c.Email == email);
+            return customerRepository.GetAll().SingleOrDefault(c => c.Email == email);
         }
 
         public Customer UserMatch(string Email, string Password)

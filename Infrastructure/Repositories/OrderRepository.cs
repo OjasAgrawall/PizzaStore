@@ -16,7 +16,7 @@ namespace PizzaStore.Infrastructure.ModelBusinessLayer
         }
         public void AddOrderPlaced(int Id, DateTime orderPlaced)
         {
-            context.Database.ExecuteSqlInterpolated($"EXECUTE spAddDetailsToOrder {Id}, {orderPlaced}");
+            context.Database.ExecuteSqlInterpolated($"EXECUTE spAddOrderPlaced {Id}, {orderPlaced}");
         }
 
         public Order GetById(int id)

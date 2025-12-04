@@ -14,7 +14,8 @@ namespace PizzaStore.Application.Interfaces
 
         public decimal TotalPrice(int OrderId);
 
-        public OrderDetail IsQuantityPositive(int productId, int quantity);
+        public OrderDetail? IsQuantityPositive(int productId, int quantity);
 
+        public IEnumerable<OrderDetail> AddProduct(IEnumerable<OrderDetail> orderDetails);
     }
 }

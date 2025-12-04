@@ -76,12 +76,7 @@ namespace PizzaStore.Presentation.Controllers
             Order order = orderService.GetByCustomerId(customer.Id);
             orderService.AddOrderPlaced(order.Id, DateTime.Now);
             
-            List<OrderDetail> orderDetails = orderDetailsService.GetByOrderId(order.Id).ToList();
-
-            foreach (OrderDetail orderDetail in orderDetails)
-            {
-                orderDetail.Product = productService.GetById(orderDetail.ProductId);
-            }
+            List<OrderDetail> orderDetails = orderDetailsService.AddProduct(orderDetailsService.GetByOrderId(order.Id)).ToList();    
 
             return View(orderDetails);
         }
